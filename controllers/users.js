@@ -77,3 +77,27 @@ export const signup = async (body_params) => {
   );
   return { token: generateToken(user.id, user.username, user.email) };
 };
+
+const signinEmptyFields = ({ emailOrUsername, password }) => {
+  let errors = [];
+  if (!password) errors.push("password.empty");
+  if (!emailOrUsername) {
+    errors.push("email-username.not-found");
+  }
+  return errors;
+};
+
+export const signin = async (body_params) => {
+  let { emailOrUsername, password } = body_params;
+
+  const errors = signinEmptyFields(body_params);
+  if (errors.length) return { error: errors };
+
+  emailOrUsername = emailOrUsername.toLowerCase();
+  const isEmail = emailOrUsername.includes("@");
+  const user = await loginUser(emailOrUsername, isEmail);
+  if (!user) return { error: "email-username.not-found" };
+  if (await comparePassword(password, user.passwordHash))
+    return { token: generateToken(user.id, user.username, user.email) };
+  return { error: "password.invalid" };
+};

@@ -31,3 +31,12 @@ export const createUser = async (
     },
   });
 };
+
+export const loginUser = async (emailOrUsername, isEmail) => {
+  const whereClause = isEmail
+    ? { email: emailOrUsername }
+    : { username: emailOrUsername };
+  return await prisma.user.findFirst({
+    where: whereClause,
+  });
+};

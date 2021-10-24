@@ -6,11 +6,10 @@ const generateToken = (id, username, email) => {
       user: {
         username: username,
         email: email,
-        id: id,
       },
     },
     process.env.JWT_SECRET,
-    { subject: id, expiresIn: "1d" }
+    { subject: id, expiresIn: "8h" }
   );
 };
 

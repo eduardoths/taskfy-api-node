@@ -5,6 +5,7 @@
   "scripts": {
     "start": "babel-node ./bin/www.js",
     "dev": "cross-env DEBUG=app nodemon --exec babel-node ./bin/www",
+    "build": "babel . --ignore node_modules -d lib",
     "format": "prettier --write \"./**/*.js\""
   },
   "dependencies": {

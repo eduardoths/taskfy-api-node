@@ -11,18 +11,116 @@ datasource db {
 }
 
 model User {
-  id             String      @id @default(uuid())
-  firstName      String
-  lastName       String
-  username       String      @unique
-  email          String      @unique
-  passwordHash   String?
-  githubId       Int?
-  googleId       Int?
-  appleId        Int?
-  createdAt      DateTime    @default(now())
-  updatedAt      DateTime    @updatedAt
-  deletedAt      DateTime?
+  // fields
+  id           String  @id @default(uuid())
+  isAdmin      Boolean @default(false)
+  firstName    String
+  lastName     String
+  username     String  @unique
+  email        String  @unique
+  passwordHash String
+  githubId     Int?
+  googleId     Int?
+  appleId      Int?
 
+  // relations
+  Tasks          Task[]
+  Manager        Manager?
+  Organization   Organization @relation(fields: [organizationId], references: [id])
+  Board          Board        @relation(fields: [boardId], references: [id])
+  boardId        String
+  organizationId String
+
+
+  // timestamps
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
   @@map("user")
+}
+
+model Organization {
+  // fields
+  id          String @id @default(uuid())
+  companyName String
+
+  // relations
+  users User[]
+
+  // timestamps
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+  @@map("organization")
+}
+
+model Manager {
+  // fields
+  id String @id @default(uuid())
+
+  // relations
+  User      User   @relation(fields: [managerId], references: [id])
+  Board     Board  @relation(fields: [boardId], references: [id])
+  managerId String @unique
+  boardId   String
+
+  // timestamps
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+  @@map("managers")
+}
+
+model Board {
+  // fields
+  id    String @id @default(uuid())
+  name  String
+  color String
+
+  // relations
+  users   User[]
+  lists   List[]
+  Manager Manager[]
+
+  // timestamps
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+  @@map("board")
+}
+
+model List {
+  // fields
+  id   String @id @default(uuid())
+  name String
+
+  // relations
+  tasks   Task[]
+  Board   Board  @relation(fields: [boardId], references: [id])
+  boardId String
+
+  // timestamps
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  @@map("list")
+}
+
+model Task {
+  // fields
+  id   String @id @default(uuid())
+  name String
+
+  // relations
+  User   User   @relation(fields: [userId], references: [id])
+  List   List   @relation(fields: [listId], references: [id])
+  userId String
+  listId String
+
+  // timestamps
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+  @@map("task")
 }

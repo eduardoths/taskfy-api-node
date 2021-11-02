@@ -75,7 +75,7 @@ export const signup = async (body_params) => {
     username,
     passwordHash
   );
-  return { token: generateToken(user.id, user.username, user.email) };
+  return { ok: { token: generateToken(user.id, user.username, user.email) } };
 };
 
 const signinEmptyFields = ({ emailOrUsername, password }) => {
@@ -98,6 +98,6 @@ export const signin = async (body_params) => {
   const user = await loginUser(emailOrUsername, isEmail);
   if (!user) return { error: "email-username.not-found" };
   if (await comparePassword(password, user.passwordHash))
-    return { token: generateToken(user.id, user.username, user.email) };
+    return { ok: { token: generateToken(user.id, user.username, user.email) } };
   return { error: "password.invalid" };
 };

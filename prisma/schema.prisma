@@ -19,9 +19,6 @@ model User {
   username     String  @unique
   email        String  @unique
   passwordHash String
-  githubId     Int?
-  googleId     Int?
-  appleId      Int?
 
   // relations
   Tasks          Task[]

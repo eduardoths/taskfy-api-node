@@ -1,3 +1,9 @@
+# Babel build folder
+lib/
+
+# GCP Service accounts
+credentials.json
+
 # Logs
 logs
 *.log

@@ -21,10 +21,9 @@ model User {
 
   // relations
   Tasks          Task[]
+  Boards         UsersOnBoards[]
   Manager        Manager?
   Organization   Organization @relation(fields: [organizationId], references: [id])
-  Board          Board        @relation(fields: [boardId], references: [id])
-  boardId        String
   organizationId String
 
   // timestamps
@@ -63,7 +62,25 @@ model Manager {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
+  
   @@map("managers")
+}
+
+model UsersOnBoards {
+  // fields
+  id String @id @default(uuid())
+
+  // relations
+  Board          Board        @relation(fields: [boardId], references: [id])
+  User           User         @relation(fields: [userId], references: [id])
+  boardId        String
+  userId         String
+
+  // timestamps
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+  @@map("virtual_boards")
 }
 
 model Board {
@@ -73,7 +90,7 @@ model Board {
   color String
 
   // relations
-  users   User[]
+  users   UsersOnBoards[]
   lists   List[]
   Manager Manager[]
 

@@ -11,6 +11,7 @@ datasource db {
 }
 
 model User {
+<<<<<<< HEAD
   id           String  @id @default(uuid())
   isAdmin      Boolean @default(false)
   firstName    String
@@ -119,3 +120,17 @@ model Task {
   deletedAt DateTime?
   @@map("task")
 }
+=======
+  id             String      @id @default(uuid())
+  firstName      String
+  lastName       String
+  username       String      @unique
+  email          String      @unique
+  passwordHash   String
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+  deletedAt      DateTime?
+
+  @@map("user")
+}
+>>>>>>> d8ff67418853750104cffadf1d8105fa5525b931

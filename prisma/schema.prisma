@@ -16,10 +16,7 @@ model User {
   lastName       String
   username       String      @unique
   email          String      @unique
-  passwordHash   String?
-  githubId       Int?
-  googleId       Int?
-  appleId        Int?
+  passwordHash   String
   createdAt      DateTime    @default(now())
   updatedAt      DateTime    @updatedAt
   deletedAt      DateTime?

@@ -40,7 +40,7 @@ const signupFieldValidation = async (username, email, password) => {
   if (!errors.length && !(await isEmailUnique(email)))
     errors.push("email.not-unique");
   if (!errors.length && !(await isUsernameUnique(username)))
-    return errors.push("username.not-unique");
+    errors.push("username.not-unique");
   return errors;
 };
 

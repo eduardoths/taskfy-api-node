@@ -14,12 +14,35 @@ export const isUsernameUnique = async (username) => {
   return !uniqueUsername;
 };
 
+export const getOrganizationId = async (emailDomain) => {
+  const org = await prisma.organization.findFirst({
+    where: {
+      companyName: emailDomain,
+    },
+  });
+  if (org) {
+    return org.id;
+  }
+  return null;
+};
+
+export const createOrganization = async (emailDomain) => {
+  const org = await prisma.organization.create({
+    data: {
+      companyName: emailDomain,
+    },
+  });
+  return org.id;
+};
+
 export const createUser = async (
   firstName,
   lastName,
   email,
   username,
-  passwordHash
+  passwordHash,
+  organizationId,
+  isAdmin
 ) => {
   return await prisma.user.create({
     data: {
@@ -28,6 +51,8 @@ export const createUser = async (
       email: email,
       username: username,
       passwordHash: passwordHash,
+      organizationId: organizationId,
+      isAdmin: isAdmin,
     },
   });
 };

@@ -5,6 +5,8 @@ import {
   isUsernameUnique,
   createUser,
   loginUser,
+  getOrganizationId,
+  createOrganization,
 } from "../models/users";
 
 const minUsernameLength = 3;
@@ -68,12 +70,18 @@ export const signup = async (body_params) => {
   if (errors.length) return { error: errors };
 
   const passwordHash = await hashPassword(password);
+  const emailDomain = email.split("@")[1];
+  let orgId = await getOrganizationId(emailDomain);
+  const isAdmin = !orgId;
+  if (!orgId) orgId = await createOrganization(emailDomain);
   const user = await createUser(
     firstName,
     lastName,
     email,
     username,
-    passwordHash
+    passwordHash,
+    orgId,
+    isAdmin
   );
   return { ok: { token: generateToken(user.id, user.username, user.email) } };
 };

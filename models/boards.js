@@ -9,3 +9,21 @@ export const createBoard = async (boardName, color) => {
   });
   return board.id;
 };
+
+export const deleteBoardFromDB = async (id) => {
+  await prisma.board.update({
+    where: {
+      id: id,
+    },
+    data: {
+      manager: {
+        deleteMany: {},
+      },
+    },
+  });
+  await prisma.board.delete({
+    where: {
+      id: id,
+    },
+  });
+};

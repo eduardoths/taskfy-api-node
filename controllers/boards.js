@@ -1,6 +1,5 @@
-import { getOrg } from "./users";
-import { createBoard } from "../models/boards";
-import { addManager } from "./managers";
+import { createBoard, deleteBoardFromDB } from "../models/boards";
+import { addManager, isManagerOfBoard } from "./managers";
 
 const colorRegex = /[#][0-9a-f]{6}/;
 
@@ -19,4 +18,15 @@ export const create = async ({ body }) => {
   const boardID = await createBoard(boardName, color);
   addManager(boardID, body.user.id);
   return { ok: { boardID } };
+};
+
+export const deleteBoard = async ({ body }, id) => {
+  const { user } = body;
+  let { ok, error } = isManagerOfBoard(user.id, id);
+  if (error) {
+    // TODO verify if it's Admin of organization
+    return { error: error };
+  }
+  await deleteBoardFromDB(id);
+  return { ok: id };
 };

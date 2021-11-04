@@ -8,3 +8,12 @@ export const managerToBoard = async (boardID, managerID) => {
     },
   });
 };
+
+export const managerFromUserAndBoard = async (userId, boardId) => {
+  return await prisma.manager.findFirst({
+    where: {
+      boardId: boardId,
+      managerId: userId,
+    },
+  });
+};

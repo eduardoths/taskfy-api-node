@@ -4,7 +4,7 @@ export const ensureAuth = (req, res, next) => {
   const authToken = req.headers.authorization;
   if (!authToken) {
     return res.status(401).json({
-      error: "invalid token",
+      error: "token.invalid",
     });
   }
 
@@ -21,7 +21,7 @@ export const ensureAuth = (req, res, next) => {
     next();
   } catch (e) {
     return res.status(401).json({
-      error: "expired token",
+      error: "token.expired",
     });
   }
 };

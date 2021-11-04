@@ -93,7 +93,6 @@ model Board {
   // timestamps
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
-
   @@map("board")
 }
 

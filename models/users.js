@@ -65,3 +65,10 @@ export const loginUser = async (emailOrUsername, isEmail) => {
     where: whereClause,
   });
 };
+
+export const getOrgByUser = async (userId) => {
+  const company = await prisma.user.findFirst({
+    where: { id: userId },
+  });
+  return company.id;
+};

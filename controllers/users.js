@@ -7,6 +7,7 @@ import {
   loginUser,
   getOrganizationId,
   createOrganization,
+  getOrgByUser,
 } from "../models/users";
 
 const minUsernameLength = 3;
@@ -108,4 +109,10 @@ export const signin = async (body_params) => {
   if (await comparePassword(password, user.passwordHash))
     return { ok: { token: generateToken(user.id, user.username, user.email) } };
   return { error: "password.invalid" };
+};
+
+export const getOrg = async (userID) => {
+  const orgID = await getOrgByUser(userID);
+  if (!orgID) return { error: "organization.not-found" };
+  return { ok: { id: orgID } };
 };

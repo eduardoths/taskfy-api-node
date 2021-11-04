@@ -29,7 +29,6 @@ model User {
   // timestamps
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
   @@map("user")
 }
 
@@ -44,7 +43,6 @@ model Organization {
   // timestamps
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
   @@map("organization")
 }
 
@@ -61,7 +59,6 @@ model Manager {
   // timestamps
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
 
   @@map("manager")
 }
@@ -79,7 +76,6 @@ model UsersOnBoards {
   // timestamps
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
   @@map("virtual_board")
 }
 
@@ -97,7 +93,6 @@ model Board {
   // timestamps
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
 
   @@map("board")
 }
@@ -115,7 +110,6 @@ model List {
   // timestamps
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
 
   @@map("list")
 }
@@ -134,6 +128,5 @@ model Task {
   // timestamps
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
   @@map("task")
 }

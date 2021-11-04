@@ -53,7 +53,7 @@ model Manager {
   // relations
   User      User   @relation(fields: [managerId], references: [id])
   Board     Board  @relation(fields: [boardId], references: [id])
-  managerId String @unique
+  managerId String 
   boardId   String
 
   // timestamps

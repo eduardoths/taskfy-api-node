@@ -27,3 +27,21 @@ export const deleteBoardFromDB = async (id) => {
     },
   });
 };
+
+export const getUserBoards = async (userId) => {
+  const userBoards = await prisma.board.findMany({
+    where: {
+      users: {
+        some: {},
+      },
+    },
+  });
+  const managerBoards = await prisma.board.findMany({
+    where: {
+      manager: {
+        some: {},
+      },
+    },
+  });
+  return { boards: { asUser: userBoards, asManager: managerBoards } };
+};

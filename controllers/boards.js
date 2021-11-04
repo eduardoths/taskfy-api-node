@@ -1,4 +1,8 @@
-import { createBoard, deleteBoardFromDB } from "../models/boards";
+import {
+  createBoard,
+  deleteBoardFromDB,
+  getUserBoards,
+} from "../models/boards";
 import { addManager, isManagerOfBoard } from "./managers";
 
 const colorRegex = /[#][0-9a-f]{6}/;
@@ -29,4 +33,8 @@ export const deleteBoard = async ({ body }, id) => {
   }
   await deleteBoardFromDB(id);
   return { ok: id };
+};
+
+export const getAllUserBoards = async (userId) => {
+  return await getUserBoards(userId);
 };

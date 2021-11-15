@@ -8,7 +8,7 @@ import {
   getOrganizationId,
   createOrganization,
   getOrgByUser,
-} from "../models/users";
+} from "../repositories/users";
 
 const minUsernameLength = 3;
 const maxUsernameLength = 25;

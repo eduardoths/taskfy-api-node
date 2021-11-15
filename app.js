@@ -5,8 +5,8 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 
-import usersRouter from "./routes/users";
-import boardsRouter from "./routes/boards";
+import usersRouter from "./src/routes/users";
+import boardsRouter from "./src/routes/boards";
 
 var app = express();
 

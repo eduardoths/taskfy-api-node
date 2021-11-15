@@ -1,4 +1,7 @@
-import { managerToBoard, managerFromUserAndBoard } from "../models/managers";
+import {
+  managerToBoard,
+  managerFromUserAndBoard,
+} from "../repositories/managers";
 
 export const addManager = async (boardID, managerID) => {
   await managerToBoard(boardID, managerID);

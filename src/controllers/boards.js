@@ -2,7 +2,7 @@ import {
   createBoard,
   deleteBoardFromDB,
   getUserBoards,
-} from "../models/boards";
+} from "../repositories/boards";
 import { addManager, isManagerOfBoard } from "./managers";
 
 const colorRegex = /[#][0-9a-f]{6}/;

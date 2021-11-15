@@ -23,13 +23,12 @@ model User {
   Tasks          Task[]
   Boards         UsersOnBoards[]
   Manager        Manager?
-  Organization   Organization @relation(fields: [organizationId], references: [id])
+  Organization   Organization    @relation(fields: [organizationId], references: [id])
   organizationId String
 
   // timestamps
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
   @@map("user")
 }
 
@@ -44,7 +43,6 @@ model Organization {
   // timestamps
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
   @@map("organization")
 }
 
@@ -55,15 +53,14 @@ model Manager {
   // relations
   User      User   @relation(fields: [managerId], references: [id])
   Board     Board  @relation(fields: [boardId], references: [id])
-  managerId String @unique
+  managerId String 
   boardId   String
 
   // timestamps
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
-  
-  @@map("managers")
+
+  @@map("manager")
 }
 
 model UsersOnBoards {
@@ -71,16 +68,15 @@ model UsersOnBoards {
   id String @id @default(uuid())
 
   // relations
-  Board          Board        @relation(fields: [boardId], references: [id])
-  User           User         @relation(fields: [userId], references: [id])
-  boardId        String
-  userId         String
+  Board   Board  @relation(fields: [boardId], references: [id])
+  User    User   @relation(fields: [userId], references: [id])
+  boardId String
+  userId  String
 
   // timestamps
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
-  @@map("virtual_boards")
+  @@map("virtual_board")
 }
 
 model Board {
@@ -92,12 +88,11 @@ model Board {
   // relations
   users   UsersOnBoards[]
   lists   List[]
-  Manager Manager[]
+  manager Manager[]
 
   // timestamps
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
   @@map("board")
 }
 
@@ -114,7 +109,6 @@ model List {
   // timestamps
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
 
   @@map("list")
 }
@@ -133,6 +127,5 @@ model Task {
   // timestamps
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
   @@map("task")
 }

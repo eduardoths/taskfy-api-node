@@ -1,22 +1,23 @@
-var express = require("express");
-var router = express.Router();
+import { Router } from "express";
 
-import { signup, signin } from "../controllers/users";
+const UserRouter = (controllerContainer, serviceContainer) => {
+  const userController = controllerContainer.UserController;
+  const userService = serviceContainer.UserService;
+  var router = Router();
 
-router.get("/", async (req, res, next) => {
-  res.json({ teste: "vai-tomar-no-c#-jacobo" });
-});
+  router.post("/signup", async (req, res, next) => {
+    const { ok, errors } = await userController.signup(req.body);
+    if (errors) return res.status(400).json(errors);
+    return res.status(201).json({ data: ok });
+  });
 
-router.post("/signup", async (req, res, next) => {
-  const { ok, error } = await signup(req.body);
-  if (error) return res.status(400).json(error);
-  return res.status(201).json(ok);
-});
+  router.post("/signin", async (req, res, next) => {
+    const { ok, errors } = await userService.signin(req.body);
+    if (errors) return res.status(400).json(errors);
+    return res.status(200).json({ data: ok });
+  });
 
-router.post("/signin", async (req, res, next) => {
-  const { ok, error } = await signin(req.body);
-  if (error) return res.status(400).json(error);
-  return res.status(200).json(ok);
-});
+  return router;
+};
 
-module.exports = router;
+export default UserRouter;

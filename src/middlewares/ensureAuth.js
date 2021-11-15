@@ -1,4 +1,4 @@
-import { verify } from "jsonwebtoken";
+import jwt from "../../pkg/jwt";
 
 export const ensureAuth = (req, res, next) => {
   const authToken = req.headers.authorization;
@@ -10,16 +10,14 @@ export const ensureAuth = (req, res, next) => {
 
   const [, token] = authToken.split(" ");
 
+  const jwtHelper = jwt();
+
   try {
-    const { user, sub } = verify(token, process.env.JWT_SECRET);
-    const { username, email } = user;
-    req.body.user = {
-      id: sub,
-      username: username,
-      email: email,
-    };
+    let user = jwtHelper.verifyToken(token);
+    res.locals.user = user;
     next();
   } catch (e) {
+    console.error(e);
     return res.status(401).json({
       error: "token.expired",
     });

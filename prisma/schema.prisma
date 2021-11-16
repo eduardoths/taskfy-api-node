@@ -22,14 +22,14 @@ model User {
   // relations
   Tasks          Task[]
   Boards         UsersOnBoards[]
-  Manager        Manager?
+  Managers       Manager[]
   Organization   Organization    @relation(fields: [organizationId], references: [id])
   organizationId String
 
   // timestamps
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
-  @@map("user")
+  @@map("users")
 }
 
 model Organization {
@@ -43,13 +43,10 @@ model Organization {
   // timestamps
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
-  @@map("organization")
+  @@map("organizations")
 }
 
 model Manager {
-  // fields
-  id String @id @default(uuid())
-
   // relations
   User      User   @relation(fields: [managerId], references: [id])
   Board     Board  @relation(fields: [boardId], references: [id])
@@ -60,7 +57,8 @@ model Manager {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 
-  @@map("manager")
+  @@map("managers")
+  @@id([managerId, boardId])
 }
 
 model UsersOnBoards {
@@ -76,7 +74,7 @@ model UsersOnBoards {
   // timestamps
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
-  @@map("virtual_board")
+  @@map("virtual_boards")
 }
 
 model Board {
@@ -93,7 +91,7 @@ model Board {
   // timestamps
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
-  @@map("board")
+  @@map("boards")
 }
 
 model List {
@@ -110,7 +108,7 @@ model List {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 
-  @@map("list")
+  @@map("lists")
 }
 
 model Task {
@@ -127,5 +125,5 @@ model Task {
   // timestamps
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
-  @@map("task")
+  @@map("tasks")
 }

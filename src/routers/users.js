@@ -17,6 +17,12 @@ const UserRouter = (controllerContainer, serviceContainer) => {
     return res.status(200).json({ data: ok });
   });
 
+  router.post("/update", async (req, res, next, newInfo) => {
+    const { ok, errors } = await userService.update(req.body, newInfo);
+    if (errors) return res.status(400).json(errors);
+    return res.status(200).json({ data: ok });
+  });
+
   return router;
 };
 

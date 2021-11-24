@@ -1,70 +1,81 @@
 # Taskfy-api-node
 
-PCS3645 - Software Engineering Laboratory I project
+Backend do projeto Taskfy da disciplina PCS3643 - Laboratório de Engenharia de Software I.
 
 ---
 
-## Requirements
+## Requisitos
 
-For development, you will only need Node.js and a node global package, Yarn, installed in your environement.
+Para executar o servidor é necessário instalar o Node.js e um gerenciador de pacotes, Yarn.
 
 ### Node
 
-- #### Node installation on Windows
+- #### Instalação do Node.js em windows
 
-  Just go on [official Node.js website](https://nodejs.org/) and download the installer.
-  Also, be sure to have `git` available in your PATH, `npm` might need it (You can find git [here](https://git-scm.com/)).
+  Visite o [site oficial do Node.js](https://nodejs.org/) e baixe o instalador
+  Além disso, também é necessário instalar o `git` e o `npm`.
+  O npm vem instalado com o node, enquanto o git pode ser baixado [aqui](https://git-scm.com/)
 
-- #### Node installation on Ubuntu
+- #### Instalação do Node.js no ubuntu
+  É possível instalar o node.js e o npm com o apt.
 
-  You can install nodejs and npm easily with apt install, just run the following commands.
+```zsh
+$ sudo apt-get install nodejs
+$ sudo apt-get install npm
+```
 
-      $ sudo apt install nodejs
-      $ sudo apt install npm
+- #### Outros Sistemas Operacionais
+  Para baixar o node em outros sistemas operacionais, visite o [site oficial do Noje.js](https://nodejs.org/) e o [site oficial do NPM](https://npmjs.org/).
 
-- #### Other Operating Systems
-  You can find more information about the installation on the [official Node.js website](https://nodejs.org/) and the [official NPM website](https://npmjs.org/).
+Para validar se a instalação ocorreu com sucesso, execute os seguintes comandos:
 
-If the installation was successful, you should be able to run the following command.
+```zsh
+$ node --version
+v16.3.0
 
-    $ node --version
-    v16.3.0
+$ npm --version
+7.15.1
+```
 
-    $ npm --version
-    7.15.1
+### Instalação do yarn
 
-If you need to update `npm`, you can make it using `npm`! Cool right? After running the following command, just open again the command line and be happy.
+Após instalar o npm, execute o seguinte comando:
 
-    $ npm install npm -g
-
-###
-
-### Yarn installation
-
-After installing node, this project will need yarn too, so just run the following command.
-
-      $ npm install -g yarn
+```zsh
+$ npm install -g yarn
+```
 
 ---
 
-## Install
+## Clonando este repositório
 
-    $ git clone https://github.com/YOUR_USERNAME/PROJECT_TITLE
-    $ cd PROJECT_TITLE
-    $ yarn install
+```zsh
+$ git clone https://github.com/eduardothsantos/taskfy-api-node
+$ cd taskfy-api-node
+$ yarn install
+```
 
-## Configure app
+## Configurando o aplicativo
 
-Open `a/nice/path/to/a.file` then edit it with your settings. You will need:
+Edite o arquivo `.env` para configurar as variáveis de ambiente
 
-- A setting;
-- Another setting;
-- One more setting;
+### Variáveis de Ambiente
 
-## Running the project
+|   Variável   |                                                         Descrição                                                         |
+| :----------: | :-----------------------------------------------------------------------------------------------------------------------: |
+| DATABASE_URL | URL para conexão com banco de dados no formato `postgres://user[:password]@][netloc][:port][/dbname][?param1=value1&...]` |
+|  JWT_SECRET  |                                            Secret usado para gerar tokens jwt                                             |
 
-    $ yarn start
+## Executando o projeto
 
-## Simple build for production
+### Configurando banco de dados local
 
-    $ yarn build
+```zsh
+$ yarn prisma db push
+```
+
+### Executando o servidor em dev
+
+```zsh
+$ yarn dev
+```

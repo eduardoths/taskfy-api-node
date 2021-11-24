@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-const UserRouter = (controllerContainer, serviceContainer) => {
+const UserRouter = (controllerContainer, serviceContainer, authMiddleware) => {
   const userController = controllerContainer.UserController;
   const userService = serviceContainer.UserService;
   var router = Router();
@@ -17,8 +17,11 @@ const UserRouter = (controllerContainer, serviceContainer) => {
     return res.status(200).json({ data: ok });
   });
 
-  router.post("/update", async (req, res, next, newInfo) => {
-    const { ok, errors } = await userService.update(req.body, newInfo);
+  router.use("/update", authMiddleware);
+  router.patch("/update", async (req, res, next) => {
+    const user = res.locals.user;
+    const newInfo = req.body;
+    const { ok, errors } = await userService.update(user, newInfo);
     if (errors) return res.status(400).json(errors);
     return res.status(200).json({ data: ok });
   });

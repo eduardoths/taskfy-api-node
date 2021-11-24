@@ -49,13 +49,7 @@ export const NewUserRepository = (database) => {
         id: userId,
       },
       data: {
-        firstName: user.firstName,
-        lastName: user.lastName,
         email: newEmail,
-        username: user.username,
-        passwordHash: user.passwordHash,
-        organizationId: user.organizationId,
-        isAdmin: user.isAdmin,
       },
     });
     return await db.user.findFirst({
@@ -69,13 +63,7 @@ export const NewUserRepository = (database) => {
         id: userId,
       },
       data: {
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email,
         username: newUsername,
-        passwordHash: user.passwordHash,
-        organizationId: user.organizationId,
-        isAdmin: user.isAdmin,
       },
     });
     return await db.user.findFirst({

@@ -30,7 +30,10 @@ const serviceContainer = NewServiceContainer(
 );
 const controllerContainer = NewControllerContainer(serviceContainer);
 
-app.use("/users", usersRouter(controllerContainer, serviceContainer));
+app.use(
+  "/users",
+  usersRouter(controllerContainer, serviceContainer, ensureAuth)
+);
 app.use(
   "/boards",
   boardsRouter(controllerContainer, serviceContainer, ensureAuth)

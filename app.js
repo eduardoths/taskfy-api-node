@@ -4,6 +4,7 @@ var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
+import cors from "cors";
 
 import usersRouter from "./src/routers/users";
 import boardsRouter from "./src/routers/boards";
@@ -16,6 +17,7 @@ import jwt from "./pkg/jwt";
 import bcryptPassword from "./internal/password";
 var app = express();
 
+app.use(cors());
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

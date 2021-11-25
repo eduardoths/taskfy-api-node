@@ -43,11 +43,41 @@ export const NewUserRepository = (database) => {
     });
   };
 
+  const updateEmail = async (userId, newEmail) => {
+    await db.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        email: newEmail,
+      },
+    });
+    return await db.user.findFirst({
+      where: { email: newEmail },
+    });
+  };
+
+  const updateUsername = async (userId, newUsername) => {
+    await db.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        username: newUsername,
+      },
+    });
+    return await db.user.findFirst({
+      where: { username: newUsername },
+    });
+  };
+
   return {
     isEmailUnique,
     isUsernameUnique,
     signup,
     signinWithEmail,
     signinWithUsername,
+    updateEmail,
+    updateUsername,
   };
 };

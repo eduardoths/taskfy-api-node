@@ -132,7 +132,13 @@ export const NewUserService = (repositoryContainer, jwt, passwordHasher) => {
     };
   };
 
-  const update = async () => {};
+  const update = async (user, newInfo) => {
+    const { emailOrUsername } = newInfo;
+    const isEmail = emailOrUsername.includes("@");
+    if (isEmail) newInfo = await repo.updateEmail(user.id, emailOrUsername);
+    else newInfo = await repo.updateUsername(user.id, emailOrUsername);
+    return { ok: "user.update" };
+  };
 
   return { isSignupValid, signup, signin, update };
 };

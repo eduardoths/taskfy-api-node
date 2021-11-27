@@ -64,10 +64,17 @@ export const NewBoardRepository = (database) => {
     });
   };
 
+  const exists = async (boardId) => {
+    let board = await db.board.findUnique({ where: { id: boardId } });
+    if (board) return true;
+    return false;
+  };
+
   return {
     addUser,
     create,
     deleteBoard,
     boardsFromUser,
+    exists,
   };
 };

@@ -11,7 +11,7 @@ export const NewManagerRepository = (database) => {
   };
 
   const isManagerOfBoard = async (boardId, managerId) => {
-    await db.manager.findFirst({
+    return await db.manager.findFirst({
       where: {
         boardId: boardId,
         managerId: managerId,

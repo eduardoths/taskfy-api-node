@@ -23,7 +23,7 @@ const BoardRouter = (
     const boardId = req.params.id;
     const userId = res.locals.user.id;
     const { ok, errors } = await boardController.deleteBoard(boardId, userId);
-    if (ok) return res.status(204);
+    if (ok) return res.status(204).json();
 
     if (errors == "operation.forbidden")
       return res.status(403).json({ errors: errors });

@@ -6,8 +6,15 @@ export const NewListRepository = (database) => {
     return true;
   };
 
+  const transformName = (name) => {
+    name = name.trim();
+    name = name.replace(/\s+/g, " ");
+    return name;
+  };
+
   const create = async (boardId, name) => {
     if (!isNameValid(name)) return { errors: "list.name-short" };
+    name = transformName(name);
     return await db.list.create({
       data: {
         name: name,
@@ -18,6 +25,7 @@ export const NewListRepository = (database) => {
 
   const update = async (id, name) => {
     if (!isNameValid(name)) return { errors: "list.name-short" };
+    name = transformName(name);
     return await db.list.update({
       where: {
         id: id,

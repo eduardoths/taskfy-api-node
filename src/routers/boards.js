@@ -10,6 +10,7 @@ const BoardRouter = (
   const boardController = ControllerContainer.BoardController;
   const boardService = ServiceContainer.BoardService;
   const listController = ControllerContainer.ListController;
+  const taskController = ControllerContainer.TaskController;
 
   var router = Router();
   router.use(authmiddleware);
@@ -89,6 +90,82 @@ const BoardRouter = (
     else if (errors) return res.status(400).json({ errors: errors });
     return res.status(204).json();
   });
+
+  // Tasks
+
+  router.post("/:board_id/lists/:list_id/tasks/", async (req, res) => {
+    const { id } = res.locals.user;
+    const { board_id, list_id } = req.params;
+
+    const { ok, errors } = await taskController.create(
+      req.body,
+      list_id,
+      board_id,
+      id
+    );
+    if (errors) return res.status(400).json({ errors: errors });
+    return res.status(200).json({ data: ok });
+  });
+
+  router.get("/:board_id/lists/:list_id/tasks/:task_id", async (req, res) => {
+    const { id } = res.locals.user;
+    const { board_id, list_id, task_id } = req.params;
+
+    const { ok, errors } = await taskController.get(
+      task_id,
+      list_id,
+      board_id,
+      id
+    );
+    if (errors) {
+      if (!Array.isArray(errors) && errors.includes("not-found"))
+        return res.status(404).json({ errors: errors });
+      return res.status(400).json({ errors: errors });
+    }
+    return res.status(200).json({ data: ok });
+  });
+
+  router.put("/:board_id/lists/:list_id/tasks/:task_id", async (req, res) => {
+    const { id } = res.locals.user;
+    const { board_id, list_id, task_id } = req.params;
+
+    const { ok, errors } = await taskController.update(
+      task_id,
+      req.body,
+      list_id,
+      board_id,
+      id
+    );
+
+    if (errors) {
+      if (!Array.isArray(errors) && errors.includes("not-found"))
+        return res.status(404).json({ errors: errors });
+      return res.status(400).json({ errors: errors });
+    }
+    return res.status(200).json({ data: ok });
+  });
+
+  router.delete(
+    "/:board_id/lists/:list_id/tasks/:task_id",
+    async (req, res) => {
+      const { id } = res.locals.user;
+      const { board_id, list_id, task_id } = req.params;
+
+      const { errors } = await taskController.deleteTask(
+        task_id,
+        list_id,
+        board_id,
+        id
+      );
+
+      if (errors) {
+        if (!Array.isArray(errors) && errors.includes("not-found"))
+          return res.status(404).json({ errors: errors });
+        return res.status(400).json({ errors: errors });
+      }
+      return res.status(204).json();
+    }
+  );
 
   return router;
 };

@@ -95,15 +95,18 @@ export const NewUserService = (repositoryContainer, jwt, passwordHasher) => {
     user.passwordHash = await passwordEncryption.hash(user.password);
     user.organizationId = orgId;
     user.isAdmin = isAdmin;
-    const resUser = await repo.signup(user);
-    if (resUser)
+    user = await repo.signup(user);
+    if (user)
       return {
         ok: {
-          token: jwtHelper.signToken(
-            resUser.id,
-            resUser.username,
-            resUser.email
-          ),
+          token: jwtHelper.signToken(user.id, user.username, user.email),
+          user: {
+            id: user.id,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+            username: user.username,
+          },
         },
       };
   };
@@ -125,6 +128,13 @@ export const NewUserService = (repositoryContainer, jwt, passwordHasher) => {
       return {
         ok: {
           token: jwtHelper.signToken(user.id, user.username, user.email),
+        },
+        user: {
+          id: user.id,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          email: user.email,
+          username: user.username,
         },
       };
     return {

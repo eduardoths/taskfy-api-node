@@ -2,6 +2,10 @@ export const NewBoardController = (serviceContainer) => {
   const boardService = serviceContainer.BoardService;
   const managerService = serviceContainer.ManagerService;
 
+  const boardExists = async (boardId) => {
+    return await boardService.exists(boardId);
+  };
+
   const create = async (body, userId) => {
     let { errors, ok } = await boardService.create(body);
     if (errors) return { errors: errors };
@@ -12,12 +16,15 @@ export const NewBoardController = (serviceContainer) => {
   };
 
   const deleteBoard = async (boardId, userId) => {
-    let operationAllowed = managerService.isManagerOfBoard(boardId, userId);
+    if (!(await boardExists(boardId))) return { errors: "board.not-found" };
+    let operationAllowed = await managerService.isManagerOfBoard(
+      boardId,
+      userId
+    );
     if (!operationAllowed) {
       return { errors: "operation.forbidden" };
     }
-    const result = await boardService.deleteBoard(boardId);
-    return result;
+    return await boardService.deleteBoard(boardId);
   };
 
   return { create, deleteBoard };

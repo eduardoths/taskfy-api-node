@@ -136,6 +136,13 @@ export const NewUserService = (repositoryContainer, jwt, passwordHasher) => {
             username: user.username,
           },
         },
+        user: {
+          id: user.id,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          email: user.email,
+          username: user.username,
+        },
       };
     return {
       errors: "password.wrong",

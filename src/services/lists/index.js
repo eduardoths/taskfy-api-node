@@ -24,16 +24,22 @@ export const NewListService = (repositoryContainer) => {
   const exists = async (listId) => {
     return await repo.exists(listId);
   };
+<<<<<<< HEAD
 
   const getBoard = async (listId) => {
     return await repo.getBoard(listId);
   };
+=======
+>>>>>>> main
 
   return {
     create,
     update,
     deleteList,
     exists,
+<<<<<<< HEAD
     getBoard,
+=======
+>>>>>>> main
   };
 };

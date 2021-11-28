@@ -8,7 +8,7 @@ export const NewBoardRepository = (database) => {
         color: color,
       },
     });
-    return board.id;
+    return board;
   };
 
   const deleteBoard = async (id) => {
@@ -70,6 +70,7 @@ export const NewBoardRepository = (database) => {
     return false;
   };
 
+<<<<<<< HEAD
   const containsUser = async (boardId, userId) => {
     const count = await db.usersOnBoards.count({
       where: {
@@ -82,12 +83,17 @@ export const NewBoardRepository = (database) => {
     return false;
   };
 
+=======
+>>>>>>> main
   return {
     addUser,
     create,
     deleteBoard,
     boardsFromUser,
     exists,
+<<<<<<< HEAD
     containsUser,
+=======
+>>>>>>> main
   };
 };

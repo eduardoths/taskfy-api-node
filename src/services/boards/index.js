@@ -17,8 +17,8 @@ export const NewBoardService = (repositoryContainer) => {
     let { boardName, color } = body;
     color = color.toLowerCase();
     color = color.trim();
-    const boardId = await repo.create(boardName, color);
-    return { ok: boardId };
+    const board = await repo.create(boardName, color);
+    return { ok: board };
   };
 
   const allUserBoards = async (id) => {
@@ -42,10 +42,13 @@ export const NewBoardService = (repositoryContainer) => {
     return await repo.exists(boardId);
   };
 
+<<<<<<< HEAD
   const containsUser = async (boardId, userId) => {
     return await repo.containsUser(boardId, userId);
   };
 
+=======
+>>>>>>> main
   return {
     addUser,
     create,
@@ -53,6 +56,9 @@ export const NewBoardService = (repositoryContainer) => {
     update,
     deleteBoard,
     exists,
+<<<<<<< HEAD
     containsUser,
+=======
+>>>>>>> main
   };
 };

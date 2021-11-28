@@ -52,5 +52,11 @@ export const NewListRepository = (database) => {
     if (list) return true;
     return false;
   };
-  return { create, update, deleteList, exists };
+
+  const getBoard = async (listId) => {
+    let list = await db.list.findUnique({ where: { id: listId } });
+    if (list) return list.boardId;
+    return;
+  };
+  return { create, update, deleteList, exists, getBoard };
 };

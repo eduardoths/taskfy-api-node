@@ -25,10 +25,15 @@ export const NewListService = (repositoryContainer) => {
     return await repo.exists(listId);
   };
 
+  const getBoard = async (listId) => {
+    return await repo.getBoard(listId);
+  };
+
   return {
     create,
     update,
     deleteList,
     exists,
+    getBoard,
   };
 };

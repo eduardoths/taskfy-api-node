@@ -70,11 +70,24 @@ export const NewBoardRepository = (database) => {
     return false;
   };
 
+  const containsUser = async (boardId, userId) => {
+    const count = await db.usersOnBoards.count({
+      where: {
+        boardId: boardId,
+        userId: userId,
+      },
+    });
+
+    if (count) return true;
+    return false;
+  };
+
   return {
     addUser,
     create,
     deleteBoard,
     boardsFromUser,
     exists,
+    containsUser,
   };
 };

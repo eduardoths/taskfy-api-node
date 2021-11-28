@@ -8,7 +8,7 @@ export const NewBoardRepository = (database) => {
         color: color,
       },
     });
-    return board.id;
+    return board;
   };
 
   const deleteBoard = async (id) => {

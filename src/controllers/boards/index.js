@@ -8,7 +8,7 @@ export const NewBoardController = (serviceContainer) => {
     const board = ok;
     managerService.addManager(board.id, userId);
     boardService.addUser(board.id, userId);
-    return { ok: { board } };
+    return { ok: board };
   };
 
   const deleteBoard = async (boardId, userId) => {

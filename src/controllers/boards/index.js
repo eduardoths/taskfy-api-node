@@ -5,10 +5,10 @@ export const NewBoardController = (serviceContainer) => {
   const create = async (body, userId) => {
     let { errors, ok } = await boardService.create(body);
     if (errors) return { errors: errors };
-    const boardId = ok;
-    managerService.addManager(boardId, userId);
-    boardService.addUser(boardId, userId);
-    return { ok: { boardId } };
+    const board = ok;
+    managerService.addManager(board.id, userId);
+    boardService.addUser(board.id, userId);
+    return { ok: { board } };
   };
 
   const deleteBoard = async (boardId, userId) => {

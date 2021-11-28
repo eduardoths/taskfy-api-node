@@ -17,8 +17,8 @@ export const NewBoardService = (repositoryContainer) => {
     let { boardName, color } = body;
     color = color.toLowerCase();
     color = color.trim();
-    const boardId = await repo.create(boardName, color);
-    return { ok: boardId };
+    const board = await repo.create(boardName, color);
+    return { ok: board };
   };
 
   const allUserBoards = async (id) => {

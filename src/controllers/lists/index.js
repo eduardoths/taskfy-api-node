@@ -6,6 +6,10 @@ export const NewListController = (serviceContainer) => {
   const notAllowed = { errors: "user.not-allowed" };
   const boardNotFound = { errors: "board.not-found" };
   const listNotFound = { errors: "list.not-found" };
+<<<<<<< HEAD
+  const listDoesntBelongToBoard = { errors: "list.doesnt-belong-to-board" };
+=======
+>>>>>>> main
 
   const boardExists = async (boardId) => {
     return boardService.exists(boardId);
@@ -15,6 +19,15 @@ export const NewListController = (serviceContainer) => {
     return listService.exists(listId);
   };
 
+<<<<<<< HEAD
+  const validateList = async (listId, boardId) => {
+    const actualBoardId = await listService.getBoard(listId);
+    if (actualBoardId == boardId) return;
+    return listDoesntBelongToBoard;
+  };
+
+=======
+>>>>>>> main
   const hasPermission = async (boardId, userId) => {
     return await managerService.isManagerOfBoard(boardId, userId);
   };
@@ -28,6 +41,10 @@ export const NewListController = (serviceContainer) => {
   const update = async (boardId, userId, listId, name) => {
     if (!(await boardExists(boardId))) return boardNotFound;
     if (!(await listExists(listId))) return listNotFound;
+<<<<<<< HEAD
+    if (!(await validateList(listId, boardId))) return listDoesntBelongToBoard;
+=======
+>>>>>>> main
     if (!(await hasPermission(boardId, userId))) return notAllowed;
     return await listService.update(listId, name);
   };
@@ -35,6 +52,10 @@ export const NewListController = (serviceContainer) => {
   const deleteList = async (boardId, userId, listId) => {
     if (!(await boardExists(boardId))) return boardNotFound;
     if (!(await listExists(listId))) return listNotFound;
+<<<<<<< HEAD
+    if (!(await validateList(listId, boardId))) return listDoesntBelongToBoard;
+=======
+>>>>>>> main
     if (!(await hasPermission(boardId, userId))) return notAllowed;
     return await listService.deleteList(listId);
   };

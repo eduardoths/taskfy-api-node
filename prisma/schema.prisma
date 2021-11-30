@@ -27,8 +27,8 @@ model User {
   organizationId String
 
   // timestamps
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   @@map("users")
 }
 
@@ -41,8 +41,8 @@ model Organization {
   users User[]
 
   // timestamps
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   @@map("organizations")
 }
 
@@ -50,15 +50,15 @@ model Manager {
   // relations
   User      User   @relation(fields: [managerId], references: [id])
   Board     Board  @relation(fields: [boardId], references: [id])
-  managerId String 
+  managerId String
   boardId   String
 
   // timestamps
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  @@map("managers")
   @@id([managerId, boardId])
+  @@map("managers")
 }
 
 model UsersOnBoards {
@@ -72,8 +72,8 @@ model UsersOnBoards {
   userId  String
 
   // timestamps
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   @@map("virtual_boards")
 }
 
@@ -89,8 +89,8 @@ model Board {
   manager Manager[]
 
   // timestamps
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   @@map("boards")
 }
 
@@ -105,16 +105,18 @@ model List {
   boardId String
 
   // timestamps
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("lists")
 }
 
 model Task {
   // fields
-  id   String @id @default(uuid())
-  name String
+  id           String   @id @default(uuid())
+  name         String
+  dueDate      DateTime
+  stressPoints Int
 
   // relations
   User   User   @relation(fields: [userId], references: [id])
@@ -123,7 +125,7 @@ model Task {
   listId String
 
   // timestamps
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   @@map("tasks")
 }

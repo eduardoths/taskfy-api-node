@@ -78,6 +78,25 @@ const BoardRouter = (
     return res.status(400).json({ errors: errors });
   });
 
+  router.delete("/:board_id/user/:user_id", async (req, res) => {
+    const userRequestingId = res.locals.user.id;
+    const boardId = req.params.board_id;
+    const userId = req.params.user_id;
+
+    const { ok, errors } = await boardController.removeUser(
+      boardId,
+      userId,
+      userRequestingId
+    );
+    if (ok) return res.status(200).json({ data: ok });
+    if (errors) {
+      if (errors.includes("not-found"))
+        return res.status(404).json({ errors: errors });
+      if (errors == "operation.forbidden")
+        return res.status(403).json({ errors: errors });
+    }
+    return res.status(400).json({ errors: errors });
+  });
   // Lists
 
   router.post("/:board_id/lists", async (req, res) => {

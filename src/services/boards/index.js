@@ -54,8 +54,13 @@ export const NewBoardService = (repositoryContainer) => {
     return await repo.getOrganization(boardId);
   };
 
+  const removeUser = async (boardId, userId) => {
+    return await repo.removeUser(boardId, userId);
+  };
+
   return {
     addUser,
+    removeUser,
     create,
     allUserBoards,
     update,

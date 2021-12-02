@@ -115,8 +115,16 @@ export const NewBoardRepository = (database) => {
     return result[0].id;
   };
 
+  const removeUser = async (boardId, userId) => {
+    return await db.$queryRaw`
+      DELETE FROM virtual_boards vb
+      WHERE "userId" = ${userId} AND "boardId"= ${boardId}
+    `;
+  };
+
   return {
     addUser,
+    removeUser,
     create,
     deleteBoard,
     boardsFromUser,

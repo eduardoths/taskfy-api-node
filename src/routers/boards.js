@@ -43,6 +43,20 @@ const BoardRouter = (
     return res.status(200).json({ data: ok });
   });
 
+  router.get("/:id", async (req, res) => {
+    const userId = res.locals.user.id;
+    const boardId = req.params.id;
+    let { ok, errors } = await boardController.getBoard(boardId, userId);
+    if (ok) return res.status(200).json({ data: ok });
+    if (errors) {
+      if (errors.includes("not-found"))
+        return res.status(404).json({ data: ok });
+      if (errors == "operation.forbidden")
+        return res.status(403).json({ errors: errors });
+      return res.status(400).json({ errors: errors });
+    }
+  });
+
   // Lists
 
   router.post("/:board_id/lists", async (req, res) => {

@@ -2,6 +2,7 @@ import { NewUserController } from "./users";
 import { NewBoardController } from "./boards";
 import { NewListController } from "./lists";
 import { NewTaskController } from "./tasks";
+import { NewOrganizationController } from "./organizations";
 
 export const NewControllerContainer = (serviceContainer) => {
   return {
@@ -9,5 +10,6 @@ export const NewControllerContainer = (serviceContainer) => {
     BoardController: NewBoardController(serviceContainer),
     ListController: NewListController(serviceContainer),
     TaskController: NewTaskController(serviceContainer),
+    OrganizationController: NewOrganizationController(serviceContainer),
   };
 };

@@ -12,7 +12,7 @@ export const NewOrganizationService = (repositoryContainer) => {
   const deleteUser = async (userId, organizationId) => {
     const user = await repo.deleteUser(userId, organizationId);
     if (user.errors) return { errors: user.errors };
-    return { ok: "user.deleted" };
+    return { ok: "user.admin-removed" };
   };
 
   const exists = async (organizationId) => {

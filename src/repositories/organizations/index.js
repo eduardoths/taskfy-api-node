@@ -21,37 +21,45 @@ export const NewOrganizationRepository = (database) => {
   };
 
   const deleteUser = async (userId, organizationId) => {
-    await db.board.delete({
-      where: {
-        id: organizationId,
-      },
-      data: {
-        users: {
-          where: {
-            id: userId,
-          },
+    return {
+      ok: await db.user.update({
+        where: {
+          id: userId,
         },
-      },
-    });
-    return { ok: ok };
+        data: {
+          isAdmin: false,
+        },
+      }),
+    };
   };
 
   const listUsers = async (organizationId) => {
-    let users = await db.users.findMany({
-      where: {
-        organizationId: organizationId,
-      },
-    });
+    let users = await db.$queryRaw`
+    SELECT DISTINCT
+      u.id,
+      u."isAdmin",
+      u."firstName",
+      u."lastName",
+      u."username",
+      u."email",
+      u."createdAt",
+      u."updatedAt"
+    FROM organizations o
+    JOIN users u ON o.id = u."organizationId"
+    JOIN virtual_boards vb ON u.id = vb."userId"
+    WHERE o.id = ${organizationId}
+    `;
     return users;
   };
 
   const listBoards = async (organizationId) => {
     let boards = await db.$queryRaw`
-    SELECT DISTINCT boards.*
+    SELECT DISTINCT b.*
     FROM organizations o
     JOIN users u ON o.id = u."organizationId"
     JOIN managers m ON u.id = m."managerId"
-    JOIN boards b ON b.id = m"boardId"
+    JOIN boards b ON b.id = m."boardId"
+    WHERE o."id" = ${organizationId}
     `;
     return boards;
   };

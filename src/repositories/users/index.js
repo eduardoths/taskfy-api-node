@@ -59,17 +59,16 @@ export const NewUserRepository = (database) => {
   };
 
   const updateUserToAdmin = async (userId) => {
-    await db.user.update({
-      where: {
-        id: userId,
-      },
-      data: {
-        isAdmin: true,
-      },
-    });
-    return await db.user.findFirst({
-      where: { userId: userId },
-    });
+    return {
+      ok: await db.user.update({
+        where: {
+          id: userId,
+        },
+        data: {
+          isAdmin: true,
+        },
+      }),
+    };
   };
 
   const exists = async (userId) => {

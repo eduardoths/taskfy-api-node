@@ -2,7 +2,8 @@ export const NewOrganizationController = (serviceContainer) => {
   const organizationService = serviceContainer.OrganizationService;
   const userService = serviceContainer.UserService;
 
-  const deleteUser = async (userId, organizationId) => {
+  const deleteUser = async (userId, companyName) => {
+    const organizationId = await organizationService.getByDomain(companyName);
     if (!(await organizationService.exists(organizationId)))
       return { errors: "organization.not-found" };
     if (!(await userService.exists(userId)))
@@ -10,16 +11,17 @@ export const NewOrganizationController = (serviceContainer) => {
     return await organizationService.deleteUser(userId, organizationId);
   };
 
-  const listUsers = async (organizationId) => {
+  const listUsers = async (companyName) => {
+    const organizationId = await organizationService.getByDomain(companyName);
     if (!(await organizationService.exists(organizationId)))
       return { errors: "organization.not-found" };
-    return await organizationService.listUsers(organizationId);
+    return { ok: await organizationService.listUsers(organizationId) };
   };
 
-  const listBoards = async (organizationId) => {
-    if (!(await organizationService.exists(organizationId)))
+  const listBoards = async (companyName) => {
+    if (!(await organizationService.exists(companyName)))
       return { errors: "organization.not-found" };
-    return await organizationService.listBoards(organizationId);
+    return { ok: await organizationService.listBoards(organizationId) };
   };
 
   return { deleteUser, listUsers, listBoards };

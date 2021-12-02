@@ -80,6 +80,16 @@ export const NewUserRepository = (database) => {
     return false;
   };
 
+  const isAdmin = async (userId) => {
+    let admin = await db.user.findUnique({
+      where: {
+        id: userId,
+      },
+    });
+    if (admin) return admin.isAdmin;
+    return false;
+  };
+
   return {
     isEmailUnique,
     isUsernameUnique,
@@ -89,5 +99,6 @@ export const NewUserRepository = (database) => {
     updateUser,
     exists,
     updateUserToAdmin,
+    isAdmin,
   };
 };

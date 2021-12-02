@@ -2,7 +2,7 @@ import { response, Router } from "express";
 
 import { ensureAuth } from "../middlewares/ensureAuth";
 
-const BoardRouter = (
+const organizationRouter = (
   ControllerContainer,
   ServiceContainer,
   authMiddleware = ensureAuth
@@ -14,11 +14,16 @@ const BoardRouter = (
 
   var router = Router();
   router.use(authMiddleware);
+  const userIsAdmin = async (req, res, next) => {
+    if (userService.isAdmin(res.locals.user.id)) next();
+    return res.status(403).json({ errors: "user.not-allowed" });
+  };
+  router.use(userIsAdmin);
 
   // Organizations
 
   //Listar todos os boards da empresa
-  router.get("/organization/boards", async (req, res) => {
+  router.get("/boards", async (req, res) => {
     const organizationId = locals.organization.id;
     const boards = await organizationController.listBoards(organizationId);
     if (boards) return res.status(400);
@@ -26,7 +31,7 @@ const BoardRouter = (
   });
 
   //Listar todos os usuarios da empresa
-  router.get("/organization/users", async (req, res) => {
+  router.get("/users", async (req, res) => {
     const organizationId = locals.organization.id;
     const { ok, errors } = await organizationController.listUsers(
       organizationId
@@ -36,8 +41,9 @@ const BoardRouter = (
   });
 
   //Remover usuario da empresa
-  router.delete("/organization/:user_id", async (req, res) => {
+  router.delete("/:user_id", async (req, res) => {
     const { user_id } = req.params;
+    console.log(user_id);
     const organizationId = res.locals.organization.id;
 
     const { ok, errors } = await organizationController.deleteUser(
@@ -49,19 +55,16 @@ const BoardRouter = (
   });
 
   //Adicionar administrador da empresa
-  router.patch(
-    "/organization/update/:user_id",
-    authMiddleware,
-    async (req, res, next) => {
-      const userId = req.params.user_id;
-      const { ok, errors } = await userService.updateToAdmin(userId);
-      if (errors) return res.status(400).json(errors);
-      return res.status(200).json({ data: ok });
-    }
-  );
+  router.patch("/update/:user_id", authMiddleware, async (req, res, next) => {
+    const userId = req.params.user_id;
+    const requesterId = req.locals.user.id;
+    const { ok, errors } = await userService.updateToAdmin(userId);
+    if (errors) return res.status(400).json(errors);
+    return res.status(200).json({ data: ok });
+  });
 
   //Deletar Boards
-  router.delete("/organization/:board_id", async (req, res, next) => {
+  router.delete("/:board_id", async (req, res, next) => {
     const boardId = req.params.board_id;
     const userId = res.locals.user.id;
     const { ok, errors } = await boardController.deleteBoard(boardId, userId);
@@ -76,4 +79,4 @@ const BoardRouter = (
   return router;
 };
 
-export default BoardRouter;
+export default organizationRouter;

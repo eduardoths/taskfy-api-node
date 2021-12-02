@@ -8,6 +8,7 @@ import cors from "cors";
 
 import usersRouter from "./src/routers/users";
 import boardsRouter from "./src/routers/boards";
+import organizationRouter from "./src/routers/organizations";
 import db from "./pkg/databases";
 import { NewRepositoryContainer } from "./src/repositories";
 import { NewServiceContainer } from "./src/services";
@@ -39,6 +40,10 @@ app.use(
 app.use(
   "/boards",
   boardsRouter(controllerContainer, serviceContainer, ensureAuth)
+);
+app.use(
+  "/organizations",
+  organizationRouter(controllerContainer, serviceContainer, ensureAuth)
 );
 
 module.exports = app;

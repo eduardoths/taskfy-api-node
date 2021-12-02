@@ -78,6 +78,32 @@ export const NewBoardRepository = (database) => {
     return false;
   };
 
+  const getBoard = async (boardId) => {
+    const board = await db.board.findUnique({
+      where: {
+        id: boardId,
+      },
+      select: {
+        id: true,
+        name: true,
+        lists: {
+          select: {
+            id: true,
+            name: true,
+            tasks: true,
+            createdAt: true,
+            updatedAt: true,
+          },
+        },
+        users: true,
+        manager: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+    });
+    return board;
+  };
+
   return {
     addUser,
     create,
@@ -85,5 +111,6 @@ export const NewBoardRepository = (database) => {
     boardsFromUser,
     exists,
     containsUser,
+    getBoard,
   };
 };

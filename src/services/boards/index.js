@@ -50,6 +50,10 @@ export const NewBoardService = (repositoryContainer) => {
     return await repo.getBoard(boardId);
   };
 
+  const getOrganization = async (boardId) => {
+    return await repo.getOrganization(boardId);
+  };
+
   return {
     addUser,
     create,
@@ -59,5 +63,6 @@ export const NewBoardService = (repositoryContainer) => {
     exists,
     containsUser,
     getBoard,
+    getOrganization,
   };
 };

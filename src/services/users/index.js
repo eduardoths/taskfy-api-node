@@ -157,5 +157,9 @@ export const NewUserService = (repositoryContainer, jwt, passwordHasher) => {
     return { ok: updatedUser };
   };
 
-  return { isSignupValid, signup, signin, update };
+  const getOrganization = async (userId) => {
+    return await repo.getOrganization(userId);
+  };
+
+  return { isSignupValid, signup, signin, update, getOrganization };
 };

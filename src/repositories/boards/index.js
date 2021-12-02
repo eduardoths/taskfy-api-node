@@ -104,6 +104,17 @@ export const NewBoardRepository = (database) => {
     return board;
   };
 
+  const getOrganization = async (boardId) => {
+    const result = await db.$queryRaw`
+      SELECT o.id
+      FROM virtual_boards vb
+      JOIN users u ON vb."userId" = u.id 
+      JOIN organizations o ON u."organizationId" = o.id
+      WHERE vb."boardId" = ${boardId}
+    `;
+    return result[0].id;
+  };
+
   return {
     addUser,
     create,
@@ -112,5 +123,6 @@ export const NewBoardRepository = (database) => {
     exists,
     containsUser,
     getBoard,
+    getOrganization,
   };
 };

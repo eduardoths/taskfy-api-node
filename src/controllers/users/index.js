@@ -9,7 +9,7 @@ export const NewUserController = (serviceContainer) => {
     const { email } = user;
     let domain;
     try {
-      domain = email.split("@")[1];
+      domain = email.split("@")[1].split(".")[0];
     } catch {
       return { errors: "email.invalid" };
     }

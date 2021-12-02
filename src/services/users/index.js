@@ -106,6 +106,7 @@ export const NewUserService = (repositoryContainer, jwt, passwordHasher) => {
             lastName: user.lastName,
             email: user.email,
             username: user.username,
+            isAdmin: user.isAdmin,
           },
         },
       };
@@ -134,6 +135,7 @@ export const NewUserService = (repositoryContainer, jwt, passwordHasher) => {
             lastName: user.lastName,
             email: user.email,
             username: user.username,
+            isAdmin: user.isAdmin,
           },
         },
         user: {
@@ -142,6 +144,7 @@ export const NewUserService = (repositoryContainer, jwt, passwordHasher) => {
           lastName: user.lastName,
           email: user.email,
           username: user.username,
+          isAdmin: user.isAdmin,
         },
       };
     return {
@@ -149,12 +152,9 @@ export const NewUserService = (repositoryContainer, jwt, passwordHasher) => {
     };
   };
 
-  const update = async (user, newInfo) => {
-    const { emailOrUsername } = newInfo;
-    const isEmail = emailOrUsername.includes("@");
-    if (isEmail) newInfo = await repo.updateEmail(user.id, emailOrUsername);
-    else newInfo = await repo.updateUsername(user.id, emailOrUsername);
-    return { ok: "user.update" };
+  const update = async (user_id, newInfo) => {
+    const updatedUser = await repo.updateUser(user_id, newInfo);
+    return { ok: updatedUser };
   };
 
   return { isSignupValid, signup, signin, update };

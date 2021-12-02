@@ -43,31 +43,18 @@ export const NewUserRepository = (database) => {
     });
   };
 
-  const updateEmail = async (userId, newEmail) => {
+  const updateUser = async (userId, newUserInfos) => {
     await db.user.update({
       where: {
         id: userId,
       },
       data: {
-        email: newEmail,
+        email: newUserInfos.email,
+        username: newUserInfos.username,
       },
     });
     return await db.user.findFirst({
-      where: { email: newEmail },
-    });
-  };
-
-  const updateUsername = async (userId, newUsername) => {
-    await db.user.update({
-      where: {
-        id: userId,
-      },
-      data: {
-        username: newUsername,
-      },
-    });
-    return await db.user.findFirst({
-      where: { username: newUsername },
+      where: { email: newUserInfos.email },
     });
   };
 
@@ -77,7 +64,6 @@ export const NewUserRepository = (database) => {
     signup,
     signinWithEmail,
     signinWithUsername,
-    updateEmail,
-    updateUsername,
+    updateUser,
   };
 };

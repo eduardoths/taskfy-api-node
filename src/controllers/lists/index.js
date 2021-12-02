@@ -18,8 +18,8 @@ export const NewListController = (serviceContainer) => {
 
   const validateList = async (listId, boardId) => {
     const actualBoardId = await listService.getBoard(listId);
-    if (actualBoardId == boardId) return;
-    return listDoesntBelongToBoard;
+    if (actualBoardId == boardId) return true;
+    return false;
   };
 
   const hasPermission = async (boardId, userId) => {

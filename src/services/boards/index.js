@@ -30,7 +30,7 @@ export const NewBoardService = (repositoryContainer) => {
 
   const deleteBoard = async (id) => {
     const board = await repo.deleteBoard(id);
-    if (board == null) return { errors: "board.not-found" };
+    if (board.errors) return { errors: board.errors };
     return { ok: "board.deleted" };
   };
 

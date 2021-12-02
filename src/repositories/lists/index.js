@@ -37,12 +37,6 @@ export const NewListRepository = (database) => {
   };
 
   const deleteList = async (id) => {
-    const tasks = await db.task.count({
-      where: {
-        id: id,
-      },
-    });
-    if (tasks > 0) return { errors: "list.has-tasks" };
     await db.list.delete({ where: { id: id } });
     return { ok: "ok" };
   };

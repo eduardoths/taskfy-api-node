@@ -62,6 +62,16 @@ export const NewUserRepository = (database) => {
     });
   };
 
+  const getOrganization = async (userId) => {
+    const result = await db.$queryRaw`
+    SELECT o.id
+    FROM users u
+    JOIN organizations o ON u."organizationId" = o.id
+    WHERE u.id = ${userId}
+    `;
+    return result[0].id;
+  };
+
   return {
     isEmailUnique,
     isUsernameUnique,
@@ -69,5 +79,6 @@ export const NewUserRepository = (database) => {
     signinWithEmail,
     signinWithUsername,
     updateUser,
+    getOrganization,
   };
 };

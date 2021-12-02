@@ -1,6 +1,7 @@
 export const NewBoardController = (serviceContainer) => {
   const boardService = serviceContainer.BoardService;
   const managerService = serviceContainer.ManagerService;
+  const userService = serviceContainer.UserService;
 
   const create = async (body, userId) => {
     let { errors, ok } = await boardService.create(body);
@@ -32,5 +33,36 @@ export const NewBoardController = (serviceContainer) => {
     return { ok: await boardService.getBoard(boardId) };
   };
 
-  return { create, deleteBoard, getBoard };
+  const addUser = async (boardId, userId, managerId) => {
+    if (!(await boardService.exists(boardId)))
+      return { errors: "board.not-found" };
+    if (!(await managerService.isManagerOfBoard(boardId, managerId)))
+      return { errors: "operaiton.forbidden" };
+    const orgId = await boardService.getOrganization(boardId);
+    const userOrgId = await userService.getOrganization(userId);
+
+    if (orgId != userOrgId) return { errors: "operation.forbidden" };
+    return { ok: await boardService.addUser(boardId, userId) };
+  };
+
+  const removeUser = async (boardId, userId, requesterId) => {
+    const isLeaving = userId == requesterId;
+    const isManager = await managerService.isManagerOfBoard(
+      boardId,
+      requesterId
+    );
+    const userIsNotManager = await managerService.isManagerOfBoard(
+      boardId,
+      userId
+    );
+    if ((isLeaving && userIsNotManager) || isManager) {
+      if (!(await boardService.containsUser(boardId, userId)))
+        return { errors: "board-user.not-found" };
+      return { ok: boardService.removeUser(boardId, userId) };
+    } else {
+      return { errors: "operation.forbidden" };
+    }
+  };
+
+  return { create, deleteBoard, getBoard, addUser, removeUser };
 };

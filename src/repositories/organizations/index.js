@@ -2,6 +2,9 @@ export const NewOrganizationRepository = (database) => {
   const db = database;
 
   const create = async (domain) => {
+    try {
+      domain = domain.split(".")[0];
+    } catch {}
     const org = await db.organization.create({
       data: {
         companyName: domain,

@@ -51,11 +51,12 @@ export const NewBoardController = (serviceContainer) => {
       boardId,
       requesterId
     );
-    const userIsNotManager = await managerService.isManagerOfBoard(
+    const userIsNotManager = !(await managerService.isManagerOfBoard(
       boardId,
       userId
-    );
-    if ((isLeaving && userIsNotManager) || isManager) {
+    ));
+    console.log(userIsNotManager, isLeaving, isManager);
+    if (userIsNotManager && (isLeaving || isManager)) {
       if (!(await boardService.containsUser(boardId, userId)))
         return { errors: "board-user.not-found" };
       return { ok: boardService.removeUser(boardId, userId) };

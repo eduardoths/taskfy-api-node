@@ -157,5 +157,14 @@ export const NewUserService = (repositoryContainer, jwt, passwordHasher) => {
     return { ok: updatedUser };
   };
 
-  return { isSignupValid, signup, signin, update };
+  const updateToAdmin = async (userId) => {
+    const updatedUserToAdmin = await repo.updateUserToAdmin(userId);
+    return { ok: updatedUserToAdmin };
+  };
+
+  const exists = async (userId) => {
+    return await repo.exists(userId);
+  };
+
+  return { isSignupValid, signup, signin, update, exists, updateToAdmin };
 };

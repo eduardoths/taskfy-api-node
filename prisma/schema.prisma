@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,121 +8,92 @@ datasource db {
 }
 
 model User {
-  id           String  @id @default(uuid())
-  isAdmin      Boolean @default(false)
-  firstName    String
-  lastName     String
-  username     String  @unique
-  email        String  @unique
-  passwordHash String
-
-  // relations
+  id             String          @id @default(uuid())
+  isAdmin        Boolean         @default(false)
+  firstName      String
+  lastName       String
+  username       String          @unique
+  email          String          @unique
+  passwordHash   String
+  organizationId String
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  Organization   Organization    @relation(fields: [organizationId], references: [id])
+  Managers       Manager[]
   Tasks          Task[]
   Boards         UsersOnBoards[]
-  Managers       Manager[]
-  Organization   Organization    @relation(fields: [organizationId], references: [id])
-  organizationId String
 
-  // timestamps
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
   @@map("users")
 }
 
 model Organization {
-  // fields
-  id          String @id @default(uuid())
+  id          String   @id @default(uuid())
   companyName String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  users       User[]
 
-  // relations
-  users User[]
-
-  // timestamps
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
   @@map("organizations")
 }
 
 model Manager {
-  // relations
-  User      User   @relation(fields: [managerId], references: [id])
-  Board     Board  @relation(fields: [boardId], references: [id])
   managerId String
   boardId   String
-
-  // timestamps
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  Board     Board    @relation(fields: [boardId], references: [id])
+  User      User     @relation(fields: [managerId], references: [id])
 
   @@id([managerId, boardId])
   @@map("managers")
 }
 
 model UsersOnBoards {
-  // fields
-  id String @id @default(uuid())
-
-  // relations
-  Board   Board  @relation(fields: [boardId], references: [id])
-  User    User   @relation(fields: [userId], references: [id])
-  boardId String
-  userId  String
-
-  // timestamps
+  id        String   @id @default(uuid())
+  boardId   String
+  userId    String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  Board     Board    @relation(fields: [boardId], references: [id])
+  User      User     @relation(fields: [userId], references: [id])
+
   @@map("virtual_boards")
 }
 
 model Board {
-  // fields
-  id    String @id @default(uuid())
-  name  String
-  color String
+  id        String          @id @default(uuid())
+  name      String
+  color     String
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+  lists     List[]
+  manager   Manager[]
+  users     UsersOnBoards[]
 
-  // relations
-  users   UsersOnBoards[]
-  lists   List[]
-  manager Manager[]
-
-  // timestamps
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
   @@map("boards")
 }
 
 model List {
-  // fields
-  id   String @id @default(uuid())
-  name String
-
-  // relations
-  tasks   Task[]
-  Board   Board  @relation(fields: [boardId], references: [id], onDelete: Cascade)
-  boardId String
-
-  // timestamps
+  id        String   @id @default(uuid())
+  name      String
+  boardId   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  Board     Board    @relation(fields: [boardId], references: [id])
+  tasks     Task[]
 
   @@map("lists")
 }
 
 model Task {
-  // fields
-  id           String   @id @default(uuid())
-  name         String
-  dueDate      DateTime
-  stressPoints Int
-
-  // relations
-  User   User   @relation(fields: [userId], references: [id])
-  List   List   @relation(fields: [listId], references: [id], onDelete: Cascade)
-  userId String
-  listId String
-
-  // timestamps
+  id        String   @id @default(uuid())
+  name      String
+  userId    String
+  listId    String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  List      List     @relation(fields: [listId], references: [id])
+  User      User     @relation(fields: [userId], references: [id])
+
   @@map("tasks")
 }

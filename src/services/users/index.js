@@ -106,6 +106,7 @@ export const NewUserService = (repositoryContainer, jwt, passwordHasher) => {
             lastName: user.lastName,
             email: user.email,
             username: user.username,
+            isAdmin: user.isAdmin,
           },
         },
       };
@@ -134,6 +135,7 @@ export const NewUserService = (repositoryContainer, jwt, passwordHasher) => {
             lastName: user.lastName,
             email: user.email,
             username: user.username,
+            isAdmin: user.isAdmin,
           },
         },
         user: {
@@ -142,6 +144,7 @@ export const NewUserService = (repositoryContainer, jwt, passwordHasher) => {
           lastName: user.lastName,
           email: user.email,
           username: user.username,
+          isAdmin: user.isAdmin,
         },
       };
     return {

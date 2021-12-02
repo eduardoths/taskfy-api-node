@@ -62,9 +62,6 @@ model Manager {
 }
 
 model UsersOnBoards {
-  // fields
-  id String @id @default(uuid())
-
   // relations
   Board   Board  @relation(fields: [boardId], references: [id])
   User    User   @relation(fields: [userId], references: [id])
@@ -74,6 +71,7 @@ model UsersOnBoards {
   // timestamps
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  @@id([userId, boardId])
   @@map("virtual_boards")
 }
 

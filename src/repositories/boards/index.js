@@ -95,22 +95,52 @@ export const NewBoardRepository = (database) => {
             updatedAt: true,
           },
         },
-        users: true,
-        manager: true,
+        users: {
+          select: { User: true },
+        },
+        manager: {
+          select: { User: true },
+        },
         createdAt: true,
         updatedAt: true,
       },
     });
+    for (let i = 0; i < board.users.length; i++) {
+      board.users[i] = board.users[i].User;
+    }
+    for (let i = 0; i < board.manager.length; i++) {
+      board.manager[i] = board.manager[i].User;
+    }
     return board;
+  };
+
+  const getOrganization = async (boardId) => {
+    const result = await db.$queryRaw`
+      SELECT o.id
+      FROM virtual_boards vb
+      JOIN users u ON vb."userId" = u.id 
+      JOIN organizations o ON u."organizationId" = o.id
+      WHERE vb."boardId" = ${boardId}
+    `;
+    return result[0].id;
+  };
+
+  const removeUser = async (boardId, userId) => {
+    return await db.$queryRaw`
+      DELETE FROM virtual_boards vb
+      WHERE "userId" = ${userId} AND "boardId"= ${boardId}
+    `;
   };
 
   return {
     addUser,
+    removeUser,
     create,
     deleteBoard,
     boardsFromUser,
     exists,
     containsUser,
     getBoard,
+    getOrganization,
   };
 };

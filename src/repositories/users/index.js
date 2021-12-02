@@ -44,7 +44,7 @@ export const NewUserRepository = (database) => {
   };
 
   const updateUser = async (userId, newUserInfos) => {
-    await db.user.update({
+    return await db.user.update({
       where: {
         id: userId,
       },
@@ -52,10 +52,24 @@ export const NewUserRepository = (database) => {
         email: newUserInfos.email,
         username: newUserInfos.username,
       },
+      select: {
+        id: true,
+        username: true,
+        email: true,
+        firstName: true,
+        lastName: true,
+      },
     });
-    return await db.user.findFirst({
-      where: { email: newUserInfos.email },
-    });
+  };
+
+  const getOrganization = async (userId) => {
+    const result = await db.$queryRaw`
+    SELECT o.id
+    FROM users u
+    JOIN organizations o ON u."organizationId" = o.id
+    WHERE u.id = ${userId}
+    `;
+    return result[0].id;
   };
 
   const updateUserToAdmin = async (userId) => {
@@ -99,5 +113,6 @@ export const NewUserRepository = (database) => {
     exists,
     updateUserToAdmin,
     isAdmin,
+    getOrganization,
   };
 };

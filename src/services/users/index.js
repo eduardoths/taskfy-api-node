@@ -153,9 +153,24 @@ export const NewUserService = (repositoryContainer, jwt, passwordHasher) => {
   };
 
   const update = async (user_id, newInfo) => {
+    // Technical debt: refactor these validations
+    const { email, username } = newInfo;
+    if (!email) return { errors: "email.empty" };
+    if (!username) return { errors: "username.empty" };
+    if (username.length < minUsernameLength)
+      return { errors: "username.short" };
+    if (username.length > maxUsernameLength) return { errors: "username.long" };
+    if (specialCharacters.test(username)) return { errors: "username.invalid" };
+    if (emailRegex.test(email)) return { errors: "email.invalid" };
+    newInfo.username = username.toLowerCase();
+    newInfo.username = username.trim();
+    newInfo.email = email.toLowerCase();
+    newInfo.email = email.trim();
+
     const updatedUser = await repo.updateUser(user_id, newInfo);
     return { ok: updatedUser };
   };
+
 
   const updateToAdmin = async (userId) => {
     const updatedUserToAdmin = await repo.updateUserToAdmin(userId);
@@ -169,6 +184,10 @@ export const NewUserService = (repositoryContainer, jwt, passwordHasher) => {
   const isAdmin = async (userId) => {
     return await repo.isAdmin(userId);
   };
+  
+  const getOrganization = async (userId) => {
+    return await repo.getOrganization(userId);
+  };
 
   return {
     isSignupValid,
@@ -178,5 +197,6 @@ export const NewUserService = (repositoryContainer, jwt, passwordHasher) => {
     exists,
     updateToAdmin,
     isAdmin,
+    getOrganization,
   };
 };

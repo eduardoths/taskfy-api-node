@@ -95,12 +95,22 @@ export const NewBoardRepository = (database) => {
             updatedAt: true,
           },
         },
-        users: true,
-        manager: true,
+        users: {
+          select: { User: true },
+        },
+        manager: {
+          select: { User: true },
+        },
         createdAt: true,
         updatedAt: true,
       },
     });
+    for (let i = 0; i < board.users.length; i++) {
+      board.users[i] = board.users[i].User;
+    }
+    for (let i = 0; i < board.manager.length; i++) {
+      board.manager[i] = board.manager[i].User;
+    }
     return board;
   };
 

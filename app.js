@@ -1,4 +1,5 @@
 require("dotenv").config();
+require("express-async-errors");
 
 var express = require("express");
 var path = require("path");
@@ -15,9 +16,12 @@ import { NewControllerContainer } from "./src/controllers";
 import { ensureAuth } from "./src/middlewares/ensureAuth";
 import jwt from "./pkg/jwt";
 import bcryptPassword from "./internal/password";
+import { responseId } from "./src/middlewares/response_id";
+import { recoverException } from "./src/middlewares/recover_exception";
 var app = express();
 
 app.use(cors());
+app.use(responseId);
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -41,4 +45,5 @@ app.use(
   boardsRouter(controllerContainer, serviceContainer, ensureAuth)
 );
 
+app.use(recoverException);
 module.exports = app;

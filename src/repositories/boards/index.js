@@ -132,8 +132,92 @@ export const NewBoardRepository = (database) => {
     `;
   };
 
+  const getDoneList = async (boardId) => {
+    const list = await db.$queryRaw`
+      SELECT l.*
+      FROM boards b
+      JOIN lists l ON l."boardId" = b.id
+      WHERE b.id = ${boardId}
+      ORDER BY l."createdAt" ASC
+      LIMIT 1
+    `;
+    return list[0];
+  };
+
+  const endsAt = async (boardId) => {
+    const endsAt = await db.$queryRaw`
+      SELECT MAX(t."dueDate") dueDate
+      FROM boards b
+      JOIN lists l ON l."boardId" = b.id
+      JOIN tasks t ON t."listId" = l.id
+      WHERE b.id = ${boardId}
+      LIMIT 1
+    `;
+    return endsAt[0].duedate;
+  };
+
+  const getActual = async (boardId, listDoneId, date) => {
+    const actual = await db.$queryRaw`
+      SELECT
+        SUM(t."stressPoints") soma
+      FROM boards b
+      JOIN lists l ON l."boardId" = b.id
+      JOIN tasks t ON t."listId" = l.id
+      WHERE b.id = ${boardId} AND l.id = ${listDoneId}
+        AND DATE(t."updatedAt") <= DATE(${date})
+    `;
+    return actual[0].soma;
+  };
+
+  const getExp = async (boardId, date) => {
+    const exp = await db.$queryRaw`
+    SELECT
+        SUM(t."stressPoints") soma
+      FROM boards b
+      JOIN lists l ON l."boardId" = b.id
+      JOIN tasks t ON t."listId" = l.id
+      WHERE b.id = ${boardId}
+        AND DATE(t."dueDate") <= DATE(${date})
+    `;
+    return exp[0].soma;
+  };
+
+  const getGraph = async (boardId, listDoneId, begins, ends) => {
+    const dates = await db.$queryRaw`
+      WITH vd AS (
+        SELECT DISTINCT DATE("createdAt") date
+        FROM boards
+        UNION ALL
+        SELECT DISTINCT DATE(t."dueDate") date
+        FROM boards b
+        JOIN lists l ON l."boardId" = b.id
+        JOIN tasks t ON t."listId" = l.id
+        WHERE b.id = ${boardId}
+        UNION ALL
+        SELECT DISTINCT DATE(t."updatedAt") date
+        FROM boards b
+        JOIN lists l ON l."boardId" = b.id
+        JOIN tasks t ON t."listId" = l.id
+        WHERE b.id = ${boardId}
+          AND l.id = ${listDoneId}
+      )
+
+      SELECT DISTINCT *
+      FROM vd
+      ORDER BY 1
+    `;
+    for (let i = 0; i < dates.length; i++) {
+      let date = new Date(dates[i].date.toString());
+      dates[i].situation = await getActual(boardId, listDoneId, date);
+      dates[i].recommended = await getExp(boardId, date);
+    }
+    return dates;
+  };
+
   return {
     addUser,
+    getGraph,
+    endsAt,
     removeUser,
     create,
     deleteBoard,
@@ -142,5 +226,6 @@ export const NewBoardRepository = (database) => {
     containsUser,
     getBoard,
     getOrganization,
+    getDoneList,
   };
 };

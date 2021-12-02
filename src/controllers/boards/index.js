@@ -1,5 +1,8 @@
+import { NewListService } from "../../services/lists";
+
 export const NewBoardController = (serviceContainer) => {
   const boardService = serviceContainer.BoardService;
+  const listService = serviceContainer.ListService;
   const managerService = serviceContainer.ManagerService;
   const userService = serviceContainer.UserService;
 
@@ -9,6 +12,8 @@ export const NewBoardController = (serviceContainer) => {
     const board = ok;
     managerService.addManager(board.id, userId);
     boardService.addUser(board.id, userId);
+    listService.create(board.id, "Finalizadas");
+
     return { ok: board };
   };
 
@@ -65,5 +70,19 @@ export const NewBoardController = (serviceContainer) => {
     }
   };
 
-  return { create, deleteBoard, getBoard, addUser, removeUser };
+  const getGraph = async (boardId) => {
+    if (!(await boardService.exists(boardId)))
+      return { errors: "board.not-found" };
+    const doneList = await boardService.getDoneList(boardId);
+    const { createdAt } = await boardService.getBoard(boardId);
+    let endsAt = await boardService.endsAt(boardId);
+    if (!endsAt) endsAt = createdAt;
+    if (endsAt < createdAt) return { errors: "error.ends-before-begin" };
+
+    return {
+      ok: await boardService.getGraph(boardId, doneList.id, createdAt, endsAt),
+    };
+  };
+
+  return { create, deleteBoard, getBoard, addUser, removeUser, getGraph };
 };

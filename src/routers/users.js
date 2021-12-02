@@ -17,10 +17,10 @@ const UserRouter = (controllerContainer, serviceContainer, authMiddleware) => {
     return res.status(200).json({ data: ok });
   });
 
-  router.patch("/update/:user_id", authMiddleware, async (req, res, next) => {
-    const { user_id } = req.params;
+  router.patch("/update", authMiddleware, async (req, res, next) => {
+    const { id } = res.locals.user;
     const newInfo = req.body;
-    const { ok, errors } = await userService.update(user_id, newInfo);
+    const { ok, errors } = await userService.update(id, newInfo);
     if (errors) return res.status(400).json(errors);
     return res.status(200).json({ data: ok });
   });

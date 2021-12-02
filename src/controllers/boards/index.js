@@ -3,7 +3,8 @@ export const NewBoardController = (serviceContainer) => {
   const managerService = serviceContainer.ManagerService;
 
   const boardExists = async (boardId) => {
-    return await boardService.exists(boardId);
+    const exists = await boardService.exists(boardId);
+    return exists;
   };
 
   const create = async (body, userId) => {

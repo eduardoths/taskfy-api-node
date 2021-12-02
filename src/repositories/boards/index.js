@@ -12,28 +12,24 @@ export const NewBoardRepository = (database) => {
   };
 
   const deleteBoard = async (id) => {
-    try {
-      await db.board.update({
-        where: {
-          id: id,
+    await db.board.update({
+      where: {
+        id: id,
+      },
+      data: {
+        manager: {
+          deleteMany: {},
         },
-        data: {
-          manager: {
-            deleteMany: {},
-          },
-          users: {
-            deleteMany: {},
-          },
+        users: {
+          deleteMany: {},
         },
-      });
-      return await db.board.delete({
-        where: {
-          id: id,
-        },
-      });
-    } catch {
-      return null;
-    }
+      },
+    });
+    return await db.board.delete({
+      where: {
+        id: id,
+      },
+    });
   };
 
   const boardsFromUser = async (userId) => {

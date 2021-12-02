@@ -44,7 +44,7 @@ export const NewUserRepository = (database) => {
   };
 
   const updateUser = async (userId, newUserInfos) => {
-    await db.user.update({
+    return await db.user.update({
       where: {
         id: userId,
       },
@@ -52,9 +52,13 @@ export const NewUserRepository = (database) => {
         email: newUserInfos.email,
         username: newUserInfos.username,
       },
-    });
-    return await db.user.findFirst({
-      where: { email: newUserInfos.email },
+      select: {
+        id: true,
+        username: true,
+        email: true,
+        firstName: true,
+        lastName: true,
+      },
     });
   };
 

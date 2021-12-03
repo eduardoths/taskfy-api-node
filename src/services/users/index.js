@@ -171,9 +171,32 @@ export const NewUserService = (repositoryContainer, jwt, passwordHasher) => {
     return { ok: updatedUser };
   };
 
+
+  const updateToAdmin = async (userId) => {
+    const updatedUserToAdmin = await repo.updateUserToAdmin(userId);
+    return { ok: updatedUserToAdmin };
+  };
+
+  const exists = async (userId) => {
+    return await repo.exists(userId);
+  };
+
+  const isAdmin = async (userId) => {
+    return await repo.isAdmin(userId);
+  };
+  
   const getOrganization = async (userId) => {
     return await repo.getOrganization(userId);
   };
 
-  return { isSignupValid, signup, signin, update, getOrganization };
+  return {
+    isSignupValid,
+    signup,
+    signin,
+    update,
+    exists,
+    updateToAdmin,
+    isAdmin,
+    getOrganization,
+  };
 };

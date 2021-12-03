@@ -72,6 +72,37 @@ export const NewUserRepository = (database) => {
     return result[0].id;
   };
 
+  const updateUserToAdmin = async (userId) => {
+    return {
+      ok: await db.user.update({
+        where: {
+          id: userId,
+        },
+        data: {
+          isAdmin: true,
+        },
+      }),
+    };
+  };
+
+  const exists = async (userId) => {
+    let user = await db.user.findUnique({
+      where: { id: userId },
+    });
+    if (user) return true;
+    return false;
+  };
+
+  const isAdmin = async (userId) => {
+    let admin = await db.user.findUnique({
+      where: {
+        id: userId,
+      },
+    });
+    if (admin) return admin.isAdmin;
+    return false;
+  };
+
   return {
     isEmailUnique,
     isUsernameUnique,
@@ -79,6 +110,9 @@ export const NewUserRepository = (database) => {
     signinWithEmail,
     signinWithUsername,
     updateUser,
+    exists,
+    updateUserToAdmin,
+    isAdmin,
     getOrganization,
   };
 };

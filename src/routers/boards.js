@@ -57,6 +57,13 @@ const BoardRouter = (
     return res.status(400).json({ errors: errors });
   });
 
+  router.get("/:board_id/graph", async (req, res) => {
+    const boardId = req.params.board_id;
+    const { ok, errors } = await boardController.getGraph(boardId);
+    if (errors) return res.status(400).json({ errors: errors });
+    return res.status(200).json({ data: ok });
+  });
+
   // User related
   router.post("/:board_id/user/:user_id", async (req, res) => {
     const managerId = res.locals.user.id;

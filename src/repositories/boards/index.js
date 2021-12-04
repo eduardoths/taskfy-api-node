@@ -200,6 +200,7 @@ export const NewBoardRepository = (database) => {
               AND l.id = ${listDoneId}
             ) t ON DATE(t."updatedAt") <= vd.date
         ) done
+        WHERE date <= ${new Date()}
         GROUP BY 1
         ORDER BY 1
       ), due_tasks AS (
@@ -230,9 +231,9 @@ export const NewBoardRepository = (database) => {
       SELECT 
         due.date,
         total_points.sum - COALESCE(due.soma, 0) recommended,
-        total_points.sum - COALESCE(done.soma, 0) situation
+        total_points.sum - done.soma situation
       FROM total_points, due_tasks due
-      JOIN done_tasks done ON done.date = due.date
+      LEFT JOIN done_tasks done ON done.date = due.date
         
     `;
     return dates;

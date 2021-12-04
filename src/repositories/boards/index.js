@@ -156,35 +156,11 @@ export const NewBoardRepository = (database) => {
     return endsAt[0].duedate;
   };
 
-  const getActual = async (boardId, listDoneId, date) => {
-    const actual = await db.$queryRaw`
-      SELECT
-        SUM(t."stressPoints") soma
-      FROM boards b
-      JOIN lists l ON l."boardId" = b.id
-      JOIN tasks t ON t."listId" = l.id
-      WHERE b.id = ${boardId} AND l.id = ${listDoneId}
-        AND DATE(t."updatedAt") <= DATE(${date})
-    `;
-    return actual[0].soma;
-  };
-
-  const getExp = async (boardId, date) => {
-    const exp = await db.$queryRaw`
-    SELECT
-        SUM(t."stressPoints") soma
-      FROM boards b
-      JOIN lists l ON l."boardId" = b.id
-      JOIN tasks t ON t."listId" = l.id
-      WHERE b.id = ${boardId}
-        AND DATE(t."dueDate") <= DATE(${date})
-    `;
-    return exp[0].soma;
-  };
-
   const getGraph = async (boardId, listDoneId, begins, ends) => {
+    const begin = new Date(begins.toString());
+    const end = new Date(ends.toString());
     const dates = await db.$queryRaw`
-      WITH vd AS (
+      WITH all_dates AS (
         SELECT DISTINCT DATE("createdAt") date
         FROM boards
         UNION ALL
@@ -200,17 +176,65 @@ export const NewBoardRepository = (database) => {
         JOIN tasks t ON t."listId" = l.id
         WHERE b.id = ${boardId}
           AND l.id = ${listDoneId}
+      ), valid_dates AS (
+        SELECT DISTINCT
+          date
+        FROM all_dates
+        WHERE date >= ${begin}
+          AND date <= ${end}
+        ORDER BY date
+      ), done_tasks AS (
+        SELECT
+          date,
+          SUM(points) soma
+        FROM (
+          SELECT 
+            vd.date, 
+            COALESCE(t."stressPoints", 0) points
+          FROM valid_dates vd
+          LEFT JOIN (
+            SELECT t.* FROM tasks t
+            JOIN lists l ON t."listId" = l.id
+            JOIN boards b ON l."boardId" = b.id
+            WHERE b.id = ${boardId}
+              AND l.id = ${listDoneId}
+            ) t ON DATE(t."updatedAt") <= vd.date
+        ) done
+        GROUP BY 1
+        ORDER BY 1
+      ), due_tasks AS (
+        SELECT
+          date,
+          SUM(points) soma
+        FROM (
+          SELECT 
+            vd.date, 
+            COALESCE(t."stressPoints", 0) points
+          FROM valid_dates vd
+          LEFT JOIN (
+          SELECT t.* FROM tasks t
+            JOIN lists l ON t."listId" = l.id
+            JOIN boards b ON l."boardId" = b.id
+            WHERE b.id = ${boardId}
+          ) t ON DATE(t."dueDate") <= vd.date
+        ) due
+        GROUP BY 1
+        ORDER BY 1
+      ), total_points AS (
+        SELECT SUM(t."stressPoints")
+        FROM tasks t
+        JOIN lists l ON t."listId" = l.id
+        JOIN boards b ON l."boardId" = b.id
+        WHERE b.id = ${boardId}
       )
-
-      SELECT DISTINCT *
-      FROM vd
-      ORDER BY 1
+      SELECT 
+        due.date,
+        total_points.sum - COALESCE(due.soma, 0) recommended,
+        total_points.sum - COALESCE(done.soma, 0) situation
+      FROM total_points, due_tasks due
+      JOIN done_tasks done ON done.date = due.date
+        
     `;
-    for (let i = 0; i < dates.length; i++) {
-      let date = new Date(dates[i].date.toString());
-      dates[i].situation = await getActual(boardId, listDoneId, date);
-      dates[i].recommended = await getExp(boardId, date);
-    }
     return dates;
   };
 

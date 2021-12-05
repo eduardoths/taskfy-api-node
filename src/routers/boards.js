@@ -199,6 +199,28 @@ const BoardRouter = (
     return res.status(200).json({ data: ok });
   });
 
+  router.patch("/:board_id/lists/:list_id/tasks", async (req, res) => {
+    const { id } = res.locals.user;
+    const boardId = req.params.board_id;
+    const listId = req.params.list_id;
+    const tasks = req.body;
+
+    const { ok, errors } = await taskController.updateOrder(
+      id,
+      boardId,
+      listId,
+      tasks
+    );
+    if (errors) {
+      if (errors.includes("not-found"))
+        return res.status(404).json({ errors: errors });
+      if (errors.includes("forbidden"))
+        return res.status(403).json({ errors: errors });
+      return res.status(400).json({ errors: errors });
+    }
+    return res.status(200).json({ ok: ok });
+  });
+
   router.get("/:board_id/lists/:list_id/tasks/:task_id", async (req, res) => {
     const { id } = res.locals.user;
     const { board_id, list_id, task_id } = req.params;

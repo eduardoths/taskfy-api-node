@@ -1,3 +1,5 @@
+import { NewListRepository } from "../lists";
+
 export const NewTaskRepository = (database) => {
   const db = database;
 
@@ -41,7 +43,8 @@ export const NewTaskRepository = (database) => {
     dueDate,
     stressPoints,
     taskAssignedId,
-    listId
+    listId,
+    order
   ) => {
     const { errors, ok } = fieldValidation(name, dueDate, stressPoints);
     if (errors) return { errors: errors };
@@ -56,6 +59,7 @@ export const NewTaskRepository = (database) => {
         stressPoints: stressPoints,
         userId: taskAssignedId,
         listId: listId,
+        order: order,
       },
     });
     return { ok: query };
@@ -119,5 +123,56 @@ export const NewTaskRepository = (database) => {
     if (query != 0) return true;
     return false;
   };
-  return { create, read, update, deleteTask, exists };
+
+  const tasksFromList = async (listId) => {
+    const tasks = await db.task.findMany({
+      where: { listId: listId },
+      select: {
+        id: true,
+      },
+    });
+    const newList = [];
+    for (let i = 0; i < tasks.length; i++) newList.push(tasks[i].id);
+    return newList;
+  };
+
+  const updateOrder = async (tasks) => {
+    let newOrder = [];
+    for (let i = 0; i < tasks.length; i++) {
+      newOrder.push(
+        await db.task.update({
+          where: {
+            id: tasks[i],
+          },
+          data: {
+            order: i + 1,
+          },
+        })
+      );
+    }
+    return { ok: newOrder };
+  };
+
+  const maxOrder = async (listId) => {
+    const max = await db.task.aggregate({
+      where: {
+        listId: listId,
+      },
+      _max: {
+        order: true,
+      },
+    });
+    return max._max.order;
+  };
+
+  return {
+    create,
+    read,
+    update,
+    deleteTask,
+    exists,
+    tasksFromList,
+    updateOrder,
+    maxOrder,
+  };
 };

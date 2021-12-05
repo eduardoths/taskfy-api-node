@@ -94,6 +94,9 @@ export const NewBoardRepository = (database) => {
             createdAt: true,
             updatedAt: true,
           },
+          orderBy: {
+            order: "asc",
+          },
         },
         users: {
           select: { User: true },

@@ -12,13 +12,14 @@ export const NewListRepository = (database) => {
     return name;
   };
 
-  const create = async (boardId, name) => {
+  const create = async (boardId, name, order) => {
     if (!isNameValid(name)) return { errors: "list.name-short" };
     name = transformName(name);
     return await db.list.create({
       data: {
         name: name,
         boardId: boardId,
+        order: order,
       },
     });
   };
@@ -52,5 +53,56 @@ export const NewListRepository = (database) => {
     if (list) return list.boardId;
     return;
   };
-  return { create, update, deleteList, exists, getBoard };
+
+  const listsFromBoard = async (boardId) => {
+    const list = await db.list.findMany({
+      where: { boardId: boardId },
+      select: {
+        id: true,
+      },
+    });
+    const newList = [];
+    for (let i = 0; i < list.length; i++) newList.push(list[i].id);
+    return newList;
+  };
+
+  const updateOrder = async (lists) => {
+    let newOrder = [];
+    for (let i = 0; i < lists.length; i++) {
+      newOrder.push(
+        await db.list.update({
+          where: {
+            id: lists[i],
+          },
+          data: {
+            order: i + 1,
+          },
+        })
+      );
+    }
+    return { ok: newOrder };
+  };
+
+  const maxOrder = async (boardId) => {
+    const max = await db.list.aggregate({
+      where: {
+        boardId: boardId,
+      },
+      _max: {
+        order: true,
+      },
+    });
+    return max._max.order;
+  };
+
+  return {
+    create,
+    update,
+    deleteList,
+    exists,
+    getBoard,
+    listsFromBoard,
+    updateOrder,
+    maxOrder,
+  };
 };

@@ -92,6 +92,7 @@ model List {
   // fields
   id        String   @id @default(uuid())
   name      String
+  order     Int
   // relations
   tasks     Task[]
   Board     Board    @relation(fields: [boardId], references: [id], onDelete: Cascade)
@@ -100,6 +101,7 @@ model List {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  @@index([order])
   @@map("lists")
 }
 

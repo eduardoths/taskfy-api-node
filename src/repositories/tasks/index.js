@@ -71,7 +71,8 @@ export const NewTaskRepository = (database) => {
     dueDate,
     stressPoints,
     taskAssignedId,
-    listId
+    listId,
+    order
   ) => {
     const { errors, ok } = fieldValidation(name, dueDate, stressPoints);
     if (errors) return { errors: errors };
@@ -89,6 +90,7 @@ export const NewTaskRepository = (database) => {
         stressPoints: stressPoints,
         userId: taskAssignedId,
         listId: listId,
+        order: order,
       },
     });
 

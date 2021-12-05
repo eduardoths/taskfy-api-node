@@ -31,17 +31,31 @@ export const NewTaskService = (repositoryContainer) => {
     dueDate,
     stressPoints,
     taskAssignedId,
-    listId
+    listId,
+    oldListId
   ) => {
+    let order;
+    if (oldListId !== listId) {
+      order = (await repo.maxOrder(listId)) + 1;
+    } else {
+      order = await repo.read(taskId).order;
+    }
+    let updated;
     if (await exists(taskId))
-      return await repo.update(
+      updated = await repo.update(
         taskId,
         name,
         dueDate,
         stressPoints,
         taskAssignedId,
-        listId
+        listId,
+        order
       );
+    if (oldListId !== listId) {
+      const newOrder = await repo.tasksFromList(oldListId);
+      repo.updateOrder(newOrder);
+      return updated;
+    }
     return { errors: "task.not-found" };
   };
 

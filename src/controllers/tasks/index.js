@@ -65,7 +65,9 @@ export const NewTaskController = (serviceContainer) => {
       dueDate,
       stressPoints,
       taskAssignedId,
-      newListId
+      newListId,
+      listId,
+      boardId
     );
   };
 

@@ -111,6 +111,7 @@ model Task {
   name         String
   dueDate      DateTime
   stressPoints Int
+  order        Int
   // relations
   User         User     @relation(fields: [userId], references: [id])
   List         List     @relation(fields: [listId], references: [id], onDelete: Cascade)
@@ -120,5 +121,6 @@ model Task {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
+  @@index([order])
   @@map("tasks")
 }

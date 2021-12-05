@@ -54,9 +54,8 @@ export const NewTaskService = (repositoryContainer) => {
     if (oldListId !== listId) {
       const newOrder = await repo.tasksFromList(oldListId);
       repo.updateOrder(newOrder);
-      return updated;
     }
-    return { errors: "task.not-found" };
+    return { ok: updated };
   };
 
   const deleteTask = async (listId, taskId) => {

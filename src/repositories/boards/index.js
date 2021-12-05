@@ -253,6 +253,18 @@ export const NewBoardRepository = (database) => {
     });
   };
 
+  const getFirstDueDate = async (boardId) => {
+    const startAt = await db.$queryRaw`
+      SELECT MIN(t."dueDate") dueDate
+      FROM boards b
+      JOIN lists l ON l."boardId" = b.id
+      JOIN tasks t ON t."listId" = l.id
+      WHERE b.id = ${boardId}
+      LIMIT 1
+    `;
+    return startAt[0].duedate;
+  };
+
   return {
     addUser,
     getGraph,
@@ -267,5 +279,6 @@ export const NewBoardRepository = (database) => {
     getOrganization,
     getDoneList,
     updateName,
+    getFirstDueDate,
   };
 };

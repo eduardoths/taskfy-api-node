@@ -74,6 +74,10 @@ export const NewBoardService = (repositoryContainer) => {
     return await repo.updateName(boardId, name);
   };
 
+  const getFirstDueDate = async (boardId) => {
+    return await repo.getFirstDueDate(boardId);
+  };
+
   return {
     addUser,
     removeUser,
@@ -89,5 +93,6 @@ export const NewBoardService = (repositoryContainer) => {
     endsAt,
     getGraph,
     updateName,
+    getFirstDueDate,
   };
 };

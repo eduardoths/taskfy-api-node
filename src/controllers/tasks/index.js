@@ -65,7 +65,9 @@ export const NewTaskController = (serviceContainer) => {
       dueDate,
       stressPoints,
       taskAssignedId,
-      newListId
+      newListId,
+      listId,
+      boardId
     );
   };
 
@@ -74,7 +76,7 @@ export const NewTaskController = (serviceContainer) => {
     if (listErrors) return listErrors;
     if (await hasPermission(boardId, userId)) return notAllowed;
 
-    return await taskService.deleteTask(taskId);
+    return await taskService.deleteTask(listId, taskId);
   };
 
   const get = async (taskId, listId, boardId, userId) => {
@@ -85,10 +87,18 @@ export const NewTaskController = (serviceContainer) => {
     return await taskService.get(taskId);
   };
 
+  const updateOrder = async (userId, boardId, listId, tasks) => {
+    if (await validateList(listId, boardId)) return listDoesntBelongToBoard;
+    if (await hasPermission(boardId, userId))
+      return { errors: "operation.forbidden" };
+    return await taskService.updateOrder(listId, tasks);
+  };
+
   return {
     create,
     update,
     deleteTask,
     get,
+    updateOrder,
   };
 };

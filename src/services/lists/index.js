@@ -20,9 +20,12 @@ export const NewListService = (repositoryContainer) => {
 
   const deleteList = async (boardId, listId) => {
     const { ok } = await repo.deleteList(listId);
-    const newOrder = await repo.listsFromBoard(boardId);
-    await repo.updateOrder(newOrder);
-    return { ok: ok };
+    if (ok) {
+      const newOrder = await repo.listsFromBoard(boardId);
+      await repo.updateOrder(newOrder);
+      return { ok: ok };
+    }
+    return { errors: "internal server error" };
   };
 
   const exists = async (listId) => {

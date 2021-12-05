@@ -45,12 +45,19 @@ export const NewListController = (serviceContainer) => {
     if (!(await listExists(listId))) return listNotFound;
     if (!(await validateList(listId, boardId))) return listDoesntBelongToBoard;
     if (!(await hasPermission(boardId, userId))) return notAllowed;
-    return await listService.deleteList(listId);
+    return await listService.deleteList(boardId, listId);
+  };
+
+  const updateOrder = async (boardId, userId, lists) => {
+    if (!(await boardExists(boardId))) return boardNotFound;
+    if (!(await hasPermission(boardId, userId))) return notAllowed;
+    return await listService.updateOrder(boardId, lists);
   };
 
   return {
     create,
     update,
     deleteList,
+    updateOrder,
   };
 };

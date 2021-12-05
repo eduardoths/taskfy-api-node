@@ -84,5 +84,23 @@ export const NewBoardController = (serviceContainer) => {
     };
   };
 
-  return { create, deleteBoard, getBoard, addUser, removeUser, getGraph };
+  const updateName = async (boardId, name, userId) => {
+    if (!(await boardService.exists(boardId)))
+      return { errors: "board.not-found" };
+    if (!(await managerService.isManagerOfBoard(boardId, userId)))
+      return { errors: "operation.forbidden" };
+    return {
+      ok: await boardService.updateName(boardId, name),
+    };
+  };
+
+  return {
+    create,
+    deleteBoard,
+    getBoard,
+    addUser,
+    removeUser,
+    getGraph,
+    updateName,
+  };
 };

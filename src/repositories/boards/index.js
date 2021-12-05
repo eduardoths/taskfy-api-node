@@ -239,6 +239,17 @@ export const NewBoardRepository = (database) => {
     return dates;
   };
 
+  const updateName = async (boardId, name) => {
+    const result = await db.board.update({
+      where: {
+        id: boardId,
+      },
+      data: {
+        name: name,
+      },
+    });
+  };
+
   return {
     addUser,
     getGraph,
@@ -252,5 +263,6 @@ export const NewBoardRepository = (database) => {
     getBoard,
     getOrganization,
     getDoneList,
+    updateName,
   };
 };

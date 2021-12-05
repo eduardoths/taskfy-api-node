@@ -64,6 +64,21 @@ const BoardRouter = (
     return res.status(200).json({ data: ok });
   });
 
+  router.patch("/:board_id", async (req, res) => {
+    const boardId = req.params.board_id;
+    const { name } = req.body;
+    const { id } = res.locals.user;
+    const { ok, errors } = await boardController.updateName(boardId, name, id);
+    if (errors) {
+      if (errors.includes("not-found"))
+        return res.status(404).json({ errors: errors });
+      if (errors.includes("forbidden"))
+        return res.status(403).json({ errors: errors });
+      return res.status(400).json({ errors: errors });
+    }
+    return res.status(200).json({ data: ok });
+  });
+
   // User related
   router.post("/:board_id/user/:user_id", async (req, res) => {
     const managerId = res.locals.user.id;

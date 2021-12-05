@@ -69,6 +69,11 @@ export const NewBoardService = (repositoryContainer) => {
   const getGraph = async (boardId, listId, begins, ends) => {
     return await repo.getGraph(boardId, listId, begins, ends);
   };
+
+  const updateName = async (boardId, name) => {
+    return await repo.updateName(boardId, name);
+  };
+
   return {
     addUser,
     removeUser,
@@ -83,5 +88,6 @@ export const NewBoardService = (repositoryContainer) => {
     getDoneList,
     endsAt,
     getGraph,
+    updateName,
   };
 };

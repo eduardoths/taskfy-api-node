@@ -74,13 +74,12 @@ export const NewBoardController = (serviceContainer) => {
     if (!(await boardService.exists(boardId)))
       return { errors: "board.not-found" };
     const doneList = await boardService.getDoneList(boardId);
-    const { createdAt } = await boardService.getBoard(boardId);
+    const startsAt = await boardService.getFirstDueDate(boardId);
     let endsAt = await boardService.endsAt(boardId);
     if (!endsAt) endsAt = createdAt;
-    if (endsAt < createdAt) return { errors: "error.ends-before-begin" };
 
     return {
-      ok: await boardService.getGraph(boardId, doneList.id, createdAt, endsAt),
+      ok: await boardService.getGraph(boardId, doneList.id, startsAt, endsAt),
     };
   };
 

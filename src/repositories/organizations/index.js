@@ -24,16 +24,15 @@ export const NewOrganizationRepository = (database) => {
   };
 
   const deleteUser = async (userId, organizationId) => {
-    return {
-      ok: await db.user.update({
-        where: {
+    const query = await db.organization.delete({
+      where: {
+        id: organizationId,
+        users: {
           id: userId,
         },
-        data: {
-          isAdmin: false,
-        },
-      }),
-    };
+      },
+    });
+    return { ok: query };
   };
 
   const listUsers = async (organizationId) => {
@@ -49,7 +48,6 @@ export const NewOrganizationRepository = (database) => {
       u."updatedAt"
     FROM organizations o
     JOIN users u ON o.id = u."organizationId"
-    JOIN virtual_boards vb ON u.id = vb."userId"
     WHERE o.id = ${organizationId}
     `;
     return users;

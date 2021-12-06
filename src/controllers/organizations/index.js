@@ -18,10 +18,10 @@ export const NewOrganizationController = (serviceContainer) => {
     return { ok: await organizationService.listUsers(organizationId) };
   };
 
-  const listBoards = async (companyName) => {
-    if (!(await organizationService.exists(companyName)))
+  const listBoards = async (companyId) => {
+    if (!(await organizationService.exists(companyId)))
       return { errors: "organization.not-found" };
-    return { ok: await organizationService.listBoards(organizationId) };
+    return { ok: await organizationService.listBoards(companyId) };
   };
 
   return { deleteUser, listUsers, listBoards };

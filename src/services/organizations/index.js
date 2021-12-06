@@ -27,5 +27,12 @@ export const NewOrganizationService = (repositoryContainer) => {
     return await repo.listBoards(organizationId);
   };
 
-  return { create, getByDomain, exists, deleteUser, listUsers, listBoards };
+  return {
+    create,
+    getByDomain,
+    exists,
+    deleteUser,
+    listUsers,
+    listBoards,
+  };
 };

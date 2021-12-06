@@ -30,8 +30,9 @@ const organizationRouter = (
 
   //Listar todos os boards da empresa
   router.get("/boards", async (req, res) => {
-    const companyName = res.locals.companyName;
-    const { ok, errors } = await organizationController.listBoards(companyName);
+    const companyName = res.locals.company;
+    const companyId = organizationService.getByDomain(companyName);
+    const { ok, errors } = await organizationController.listBoards(companyId);
     if (errors) {
       if (errors.includes("not-found"))
         return res.status(404).json({ errors: errors });

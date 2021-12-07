@@ -24,12 +24,9 @@ export const NewOrganizationRepository = (database) => {
   };
 
   const deleteUser = async (userId, organizationId) => {
-    const query = await db.organization.delete({
+    const query = await db.user.delete({
       where: {
-        id: organizationId,
-        users: {
-          id: userId,
-        },
+        id: userId,
       },
     });
     return { ok: query };
@@ -37,7 +34,7 @@ export const NewOrganizationRepository = (database) => {
 
   const listUsers = async (organizationId) => {
     let users = await db.$queryRaw`
-    SELECT DISTINCT
+    SELECT
       u.id,
       u."isAdmin",
       u."firstName",

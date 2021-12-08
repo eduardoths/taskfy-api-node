@@ -33,13 +33,12 @@ export const NewBoardRepository = (database) => {
   };
 
   const boardsFromUser = async (userId) => {
-    const asUser = await db.board.findMany({
-      where: {
-        users: {
-          every: { userId: userId },
-        },
-      },
-    });
+    const asUser = await db.$queryRaw`
+    SELECT b.*
+    FROM virtual_boards vb
+    JOIN boards b ON b.id = vb."boardId"
+    WHERE vb."userId" = ${userId}
+    `;
 
     const asManager = await db.board.findMany({
       where: {
@@ -90,7 +89,20 @@ export const NewBoardRepository = (database) => {
           select: {
             id: true,
             name: true,
-            tasks: true,
+            tasks: {
+              select: {
+                id: true,
+                name: true,
+                dueDate: true,
+                stressPoints: true,
+                order: true,
+                User: true,
+                userId: true,
+                listId: true,
+                createdAt: true,
+                updatedAt: true,
+              },
+            },
             createdAt: true,
             updatedAt: true,
           },
@@ -129,10 +141,14 @@ export const NewBoardRepository = (database) => {
   };
 
   const removeUser = async (boardId, userId) => {
-    return await db.$queryRaw`
-      DELETE FROM virtual_boards vb
-      WHERE "userId" = ${userId} AND "boardId"= ${boardId}
-    `;
+    return await db.usersOnBoards.delete({
+      where: {
+        userId_boardId: {
+          boardId: boardId,
+          userId: userId,
+        },
+      },
+    });
   };
 
   const getDoneList = async (boardId) => {

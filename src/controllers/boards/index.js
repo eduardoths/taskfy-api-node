@@ -60,7 +60,6 @@ export const NewBoardController = (serviceContainer) => {
       boardId,
       userId
     ));
-    console.log(userIsNotManager, isLeaving, isManager);
     if (userIsNotManager && (isLeaving || isManager)) {
       if (!(await boardService.containsUser(boardId, userId)))
         return { errors: "board-user.not-found" };

@@ -50,7 +50,6 @@ export const NewListController = (serviceContainer) => {
 
   const updateOrder = async (boardId, userId, lists) => {
     if (!(await boardExists(boardId))) return boardNotFound;
-    if (!(await hasPermission(boardId, userId))) return notAllowed;
     return await listService.updateOrder(boardId, lists);
   };
 

@@ -57,7 +57,6 @@ export const NewTaskController = (serviceContainer) => {
     if (!(await userIsValid(taskAssignedId))) return userDoesntBelongToBoard;
     const listErrors = await validateList(listId, boardId);
     if (listErrors) return listErrors;
-    if (await hasPermission(boardId, userId)) return notAllowed;
     if (!newListId) newListId = listId;
     return await taskService.update(
       taskId,
@@ -89,8 +88,6 @@ export const NewTaskController = (serviceContainer) => {
 
   const updateOrder = async (userId, boardId, listId, tasks) => {
     if (await validateList(listId, boardId)) return listDoesntBelongToBoard;
-    if (await hasPermission(boardId, userId))
-      return { errors: "operation.forbidden" };
     return await taskService.updateOrder(listId, tasks);
   };
 

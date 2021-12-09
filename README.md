@@ -65,6 +65,7 @@ Edite o arquivo `.env` para configurar as variáveis de ambiente
 | :----------: | :-----------------------------------------------------------------------------------------------------------------------: |
 | DATABASE_URL | URL para conexão com banco de dados no formato `postgres://user[:password]@][netloc][:port][/dbname][?param1=value1&...]` |
 |  JWT_SECRET  |                                            Secret usado para gerar tokens jwt                                             |
+|     PORT     |                                            Porta na qual a aplicação irá ouvir                                            |
 
 ## Executando o projeto
 
@@ -78,4 +79,12 @@ $ yarn prisma db push
 
 ```zsh
 $ yarn dev
+```
+
+## Testando o projeto
+
+O projeto possui alguns testes unitários, para executá-los, no terminal execute o seguinte comando:
+
+```zsh
+$ yarn test
 ```

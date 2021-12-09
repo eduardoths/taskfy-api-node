@@ -13,26 +13,28 @@ const organizationRouter = (
   const boardService = ServiceContainer.BoardService;
 
   var router = Router();
+
+  const getCompanyName = async (req, res, next) => {
+    const email = res.locals.user.email;
+    const companyName = email.split("@")[1].split(".")[0];
+    res.locals.company = companyName;
+    next();
+  };
+
   const userIsAdmin = async (req, res, next) => {
     if (await userService.isAdmin(res.locals.user.id)) {
-      const email = res.locals.user.email;
-      const companyName = email.split("@")[1].split(".")[0];
-      res.locals.company = companyName;
       next();
     } else {
       return res.status(403).json({ errors: "user.not-allowed" });
     }
   };
   router.use(authMiddleware);
-  router.use(userIsAdmin);
+  router.use(getCompanyName);
 
-  // Organizations
-
-  //Listar todos os boards da empresa
-  router.get("/boards", async (req, res) => {
+  //Listar todos os usuarios da empresa
+  router.get("/users", async (req, res) => {
     const companyName = res.locals.company;
-    const companyId = await organizationService.getByDomain(companyName);
-    const { ok, errors } = await organizationController.listBoards(companyId);
+    const { ok, errors } = await organizationController.listUsers(companyName);
     if (errors) {
       if (errors.includes("not-found"))
         return res.status(404).json({ errors: errors });
@@ -43,10 +45,15 @@ const organizationRouter = (
     return res.status(200).json({ data: ok });
   });
 
-  //Listar todos os usuarios da empresa
-  router.get("/users", async (req, res) => {
-    const companyName = res.locals.companyName;
-    const { ok, errors } = await organizationController.listUsers(companyName);
+  router.use(userIsAdmin);
+
+  // Organizations
+
+  //Listar todos os boards da empresa
+  router.get("/boards", async (req, res) => {
+    const companyName = res.locals.company;
+    const companyId = await organizationService.getByDomain(companyName);
+    const { ok, errors } = await organizationController.listBoards(companyId);
     if (errors) {
       if (errors.includes("not-found"))
         return res.status(404).json({ errors: errors });

@@ -14,6 +14,7 @@ export const NewOrganizationRepository = (database) => {
   };
 
   const getByDomain = async (domain) => {
+    if (!domain) return null;
     const org = await db.organization.findFirst({
       where: {
         companyName: domain,

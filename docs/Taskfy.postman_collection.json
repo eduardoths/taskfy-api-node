@@ -1,390 +1,671 @@
 {
-  "info": {
-    "_postman_id": "13b4e838-1e53-4b2f-b010-cf0ffe467c36",
-    "name": "Taskfy",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-  },
-  "item": [
-    {
-      "name": "Boards",
-      "item": [
-        {
-          "name": "Lists",
-          "item": [
-            {
-              "name": "Tasks",
-              "item": [
-                {
-                  "name": "Create task",
-                  "request": {
-                    "method": "POST",
-                    "header": [],
-                    "body": {
-                      "mode": "raw",
-                      "raw": "{\n    \"name\": \"test task\",\n    \"dueDate\": \"2021-12-02\",\n    \"stressPoints\": 1,\n    \"taskAssignedId\": \"{{USER_ID}}\"\n}",
-                      "options": {
-                        "raw": {
-                          "language": "json"
-                        }
-                      }
-                    },
-                    "url": {
-                      "raw": "{{URI}}/boards/{{BOARD_ID}}/lists/{{LIST_ID}}/tasks",
-                      "host": ["{{URI}}"],
-                      "path": [
-                        "boards",
-                        "{{BOARD_ID}}",
-                        "lists",
-                        "{{LIST_ID}}",
-                        "tasks"
-                      ]
-                    }
-                  },
-                  "response": []
-                },
-                {
-                  "name": "Delete task",
-                  "request": {
-                    "method": "DELETE",
-                    "header": [],
-                    "url": {
-                      "raw": "{{URI}}/boards/{{BOARD_ID}}/lists/{{LIST_ID}}/tasks/{{TASK_ID}}",
-                      "host": ["{{URI}}"],
-                      "path": [
-                        "boards",
-                        "{{BOARD_ID}}",
-                        "lists",
-                        "{{LIST_ID}}",
-                        "tasks",
-                        "{{TASK_ID}}"
-                      ]
-                    }
-                  },
-                  "response": []
-                },
-                {
-                  "name": "New Request",
-                  "request": {
-                    "method": "PUT",
-                    "header": [],
-                    "body": {
-                      "mode": "raw",
-                      "raw": "{\n    \"name\": \"test-task\",\n    \"dueDate\": \"2021-12-02\",\n    \"stressPoints\": 1,\n    \"taskAssignedId\": \"{{USER_ID}}\"\n}",
-                      "options": {
-                        "raw": {
-                          "language": "json"
-                        }
-                      }
-                    },
-                    "url": {
-                      "raw": "{{URI}}/boards/{{BOARD_ID}}/lists/{{LIST_ID}}/tasks/{{TASK_ID}}",
-                      "host": ["{{URI}}"],
-                      "path": [
-                        "boards",
-                        "{{BOARD_ID}}",
-                        "lists",
-                        "{{LIST_ID}}",
-                        "tasks",
-                        "{{TASK_ID}}"
-                      ]
-                    }
-                  },
-                  "response": []
-                }
-              ]
-            },
-            {
-              "name": "Create list",
-              "request": {
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n    \"name\": \"test list\"\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "{{URI}}/boards/{{BOARD_ID}}/lists",
-                  "host": ["{{URI}}"],
-                  "path": ["boards", "{{BOARD_ID}}", "lists"]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "Delete list",
-              "request": {
-                "method": "DELETE",
-                "header": [],
-                "url": {
-                  "raw": "{{URI}}/boards/{{BOARD_ID}}/lists/{{LIST_ID}}",
-                  "host": ["{{URI}}"],
-                  "path": ["boards", "{{BOARD_ID}}", "lists", "{{LIST_ID}}"]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "Update list",
-              "request": {
-                "method": "PUT",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n    \"name\": \"test-list\"\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "{{URI}}/boards/{{BOARD_ID}}/lists/{{LIST_ID}}",
-                  "host": ["{{URI}}"],
-                  "path": ["boards", "{{BOARD_ID}}", "lists", "{{LIST_ID}}"]
-                }
-              },
-              "response": []
-            }
-          ]
-        },
-        {
-          "name": "User",
-          "item": [
-            {
-              "name": "Add user",
-              "request": {
-                "method": "POST",
-                "header": [],
-                "url": {
-                  "raw": "{{URI}}/boards/{{BOARD_ID}}/user/{{NEW_USER_ID}}",
-                  "host": ["{{URI}}"],
-                  "path": ["boards", "{{BOARD_ID}}", "user", "{{NEW_USER_ID}}"]
-                }
-              },
-              "response": []
-            },
-            {
-              "name": "New Request",
-              "request": {
-                "method": "DELETE",
-                "header": [],
-                "url": {
-                  "raw": "{{URI}}/boards/{{BOARD_ID}}/user/{{NEW_USER_ID}}",
-                  "host": ["{{URI}}"],
-                  "path": ["boards", "{{BOARD_ID}}", "user", "{{NEW_USER_ID}}"]
-                }
-              },
-              "response": []
-            }
-          ]
-        },
-        {
-          "name": "Get all boards",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "GET",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": ""
-            },
-            "url": {
-              "raw": "{{URI}}/boards/",
-              "host": ["{{URI}}"],
-              "path": ["boards", ""]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Get board",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{URI}}/boards/{{BOARD_ID}}",
-              "host": ["{{URI}}"],
-              "path": ["boards", "{{BOARD_ID}}"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Create board",
-          "request": {
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n    \"boardName\": \"test board\",\n    \"color\": \"#ff00ff\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{URI}}/boards",
-              "host": ["{{URI}}"],
-              "path": ["boards"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Delete board",
-          "request": {
-            "method": "DELETE",
-            "header": [],
-            "url": {
-              "raw": "{{URI}}/boards/{{BOARD_ID}}",
-              "host": ["{{URI}}"],
-              "path": ["boards", "{{BOARD_ID}}"]
-            }
-          },
-          "response": []
-        }
-      ]
-    },
-    {
-      "name": "Users",
-      "item": [
-        {
-          "name": "Signup",
-          "request": {
-            "auth": {
-              "type": "noauth"
-            },
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n    \"firstName\": \"test\",\n    \"lastName\": \"user\",\n    \"email\": \"test@taskfy.xyz\",\n    \"password\": \"testtest\",\n    \"username\": \"tester\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{URI}}/users/signup",
-              "host": ["{{URI}}"],
-              "path": ["users", "signup"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Signin",
-          "request": {
-            "auth": {
-              "type": "noauth"
-            },
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n    \"emailOrUsername\": \"test@taskfy.xyz\",\n    \"password\": \"testtest\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{URI}}/users/signin",
-              "host": ["{{URI}}"],
-              "path": ["users", "signin"]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Update user",
-          "request": {
-            "method": "PATCH",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n    \"email\": \"test.test@taskfy.xyz\",\n    \"username\": \"testertester\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{URI}}/users/update",
-              "host": ["{{URI}}"],
-              "path": ["users", "update"]
-            }
-          },
-          "response": []
-        }
-      ]
-    }
-  ],
-  "auth": {
-    "type": "bearer",
-    "bearer": [
-      {
-        "key": "token",
-        "value": "{{JWT_TOKEN}}",
-        "type": "string"
-      }
-    ]
-  },
-  "event": [
-    {
-      "listen": "prerequest",
-      "script": {
-        "type": "text/javascript",
-        "exec": [""]
-      }
-    },
-    {
-      "listen": "test",
-      "script": {
-        "type": "text/javascript",
-        "exec": [""]
-      }
-    }
-  ],
-  "variable": [
-    {
-      "key": "JWT_TOKEN",
-      "value": ""
-    },
-    {
-      "key": "URI",
-      "value": "http://localhost:3000"
-    },
-    {
-      "key": "BOARD_ID",
-      "value": ""
-    },
-    {
-      "key": "LIST_ID",
-      "value": ""
-    },
-    {
-      "key": "TASK_ID",
-      "value": ""
-    },
-    {
-      "key": "USER_ID",
-      "value": ""
-    },
-    {
-      "key": "NEW_USER_ID",
-      "value": ""
-    }
-  ]
+	"info": {
+		"_postman_id": "13b4e838-1e53-4b2f-b010-cf0ffe467c36",
+		"name": "Taskfy",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Boards",
+			"item": [
+				{
+					"name": "Lists",
+					"item": [
+						{
+							"name": "Tasks",
+							"item": [
+								{
+									"name": "Create task",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"name\": \"test task\",\n    \"dueDate\": \"2022-01-01\",\n    \"stressPoints\": 1,\n    \"taskAssignedId\": \"{{USER_ID}}\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{URI}}/boards/{{BOARD_ID}}/lists/{{LIST_ID}}/tasks",
+											"host": [
+												"{{URI}}"
+											],
+											"path": [
+												"boards",
+												"{{BOARD_ID}}",
+												"lists",
+												"{{LIST_ID}}",
+												"tasks"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Delete task",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{URI}}/boards/{{BOARD_ID}}/lists/{{LIST_ID}}/tasks/{{TASK_ID}}",
+											"host": [
+												"{{URI}}"
+											],
+											"path": [
+												"boards",
+												"{{BOARD_ID}}",
+												"lists",
+												"{{LIST_ID}}",
+												"tasks",
+												"{{TASK_ID}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Update task",
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"name\": \"test-task\",\n    \"dueDate\": \"2021-12-02\",\n    \"stressPoints\": 1,\n    \"taskAssignedId\": \"{{USER_ID}}\",\n    \"newListId\": \"{{LIST_ID}}\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{URI}}/boards/{{BOARD_ID}}/lists/{{LIST_ID}}/tasks/{{TASK_ID}}",
+											"host": [
+												"{{URI}}"
+											],
+											"path": [
+												"boards",
+												"{{BOARD_ID}}",
+												"lists",
+												"{{LIST_ID}}",
+												"tasks",
+												"{{TASK_ID}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Update order",
+									"request": {
+										"method": "PATCH",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "[\n    \"a031b495-b9f5-497f-9ec6-b23a522344a4\",\n    \"9675a3f8-7f90-4bab-9cbe-839595cc0ee6\",\n    \"2ab33305-5392-4e42-8ad1-af4184db0f96\"\n]",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{URI}}/boards/{{BOARD_ID}}/lists/{{LIST_ID}}/tasks",
+											"host": [
+												"{{URI}}"
+											],
+											"path": [
+												"boards",
+												"{{BOARD_ID}}",
+												"lists",
+												"{{LIST_ID}}",
+												"tasks"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Create list",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"test list\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URI}}/boards/{{BOARD_ID}}/lists",
+									"host": [
+										"{{URI}}"
+									],
+									"path": [
+										"boards",
+										"{{BOARD_ID}}",
+										"lists"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete list",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{URI}}/boards/{{BOARD_ID}}/lists/{{LIST_ID}}",
+									"host": [
+										"{{URI}}"
+									],
+									"path": [
+										"boards",
+										"{{BOARD_ID}}",
+										"lists",
+										"{{LIST_ID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update list",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"test-list\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URI}}/boards/{{BOARD_ID}}/lists/{{LIST_ID}}",
+									"host": [
+										"{{URI}}"
+									],
+									"path": [
+										"boards",
+										"{{BOARD_ID}}",
+										"lists",
+										"{{LIST_ID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update order",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "[\n    \"a7e856c0-d6d4-42d6-bb47-1ecc3e97babb\",\n    \"b5d57969-cff5-40d5-b97f-4ad21f33da95\"\n]",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{URI}}/boards/{{BOARD_ID}}/lists",
+									"host": [
+										"{{URI}}"
+									],
+									"path": [
+										"boards",
+										"{{BOARD_ID}}",
+										"lists"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "User",
+					"item": [
+						{
+							"name": "Add user",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{URI}}/boards/{{BOARD_ID}}/user/{{NEW_USER_ID}}",
+									"host": [
+										"{{URI}}"
+									],
+									"path": [
+										"boards",
+										"{{BOARD_ID}}",
+										"user",
+										"{{NEW_USER_ID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Remove",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{URI}}/boards/{{BOARD_ID}}/user/{{NEW_USER_ID}}",
+									"host": [
+										"{{URI}}"
+									],
+									"path": [
+										"boards",
+										"{{BOARD_ID}}",
+										"user",
+										"{{NEW_USER_ID}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Get all boards",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{URI}}/boards/",
+							"host": [
+								"{{URI}}"
+							],
+							"path": [
+								"boards",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get board",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URI}}/boards/{{BOARD_ID}}",
+							"host": [
+								"{{URI}}"
+							],
+							"path": [
+								"boards",
+								"{{BOARD_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create board",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"boardName\": \"test board\",\n    \"color\": \"#ff00ff\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URI}}/boards",
+							"host": [
+								"{{URI}}"
+							],
+							"path": [
+								"boards"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete board",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{URI}}/boards/{{BOARD_ID}}",
+							"host": [
+								"{{URI}}"
+							],
+							"path": [
+								"boards",
+								"{{BOARD_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get graph",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URI}}/boards/{{BOARD_ID}}/graph",
+							"host": [
+								"{{URI}}"
+							],
+							"path": [
+								"boards",
+								"{{BOARD_ID}}",
+								"graph"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change name",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Teste\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URI}}/boards/{{BOARD_ID}}",
+							"host": [
+								"{{URI}}"
+							],
+							"path": [
+								"boards",
+								"{{BOARD_ID}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Signup",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstName\": \"test\",\n    \"lastName\": \"user\",\n    \"email\": \"test@taskfy.xyz\",\n    \"password\": \"testtest\",\n    \"username\": \"tester\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URI}}/users/signup",
+							"host": [
+								"{{URI}}"
+							],
+							"path": [
+								"users",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Signin",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"emailOrUsername\": \"test@taskfy.xyz\",\n    \"password\": \"testtest\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URI}}/users/signin",
+							"host": [
+								"{{URI}}"
+							],
+							"path": [
+								"users",
+								"signin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update user",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"test.test@taskfy.xyz\",\n    \"username\": \"testertester\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URI}}/users/update",
+							"host": [
+								"{{URI}}"
+							],
+							"path": [
+								"users",
+								"update"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Organizations",
+			"item": [
+				{
+					"name": "Delete board",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{URI}}/organizations/boards/{{BOARD_ID}}",
+							"host": [
+								"{{URI}}"
+							],
+							"path": [
+								"organizations",
+								"boards",
+								"{{BOARD_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all boards",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URI}}/organizations/boards/",
+							"host": [
+								"{{URI}}"
+							],
+							"path": [
+								"organizations",
+								"boards",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List all users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URI}}/organizations/users/",
+							"host": [
+								"{{URI}}"
+							],
+							"path": [
+								"organizations",
+								"users",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Turn user to admin",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{URI}}/organizations/update/{{NEW_USER_ID}}",
+							"host": [
+								"{{URI}}"
+							],
+							"path": [
+								"organizations",
+								"update",
+								"{{NEW_USER_ID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete user",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{URI}}/organizations/{{NEW_USER_ID}}",
+							"host": [
+								"{{URI}}"
+							],
+							"path": [
+								"organizations",
+								"{{NEW_USER_ID}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{JWT_TOKEN}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "JWT_TOKEN",
+			"value": ""
+		},
+		{
+			"key": "URI",
+			"value": "http://localhost:3000"
+		},
+		{
+			"key": "BOARD_ID",
+			"value": ""
+		},
+		{
+			"key": "LIST_ID",
+			"value": ""
+		},
+		{
+			"key": "TASK_ID",
+			"value": ""
+		},
+		{
+			"key": "USER_ID",
+			"value": ""
+		},
+		{
+			"key": "NEW_USER_ID",
+			"value": ""
+		}
+	]
 }

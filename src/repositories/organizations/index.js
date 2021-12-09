@@ -24,6 +24,17 @@ export const NewOrganizationRepository = (database) => {
   };
 
   const deleteUser = async (userId, organizationId) => {
+    await db.user.update({
+      where: { id: userId },
+      data: {
+        Managers: {
+          deleteMany: {},
+        },
+        Boards: {
+          deleteMany: {},
+        },
+      },
+    });
     const query = await db.user.delete({
       where: {
         id: userId,

@@ -45,7 +45,7 @@ const organizationRouter = (
 
   //Listar todos os usuarios da empresa
   router.get("/users", async (req, res) => {
-    const companyName = res.locals.companyName;
+    const companyName = res.locals.company;
     const { ok, errors } = await organizationController.listUsers(companyName);
     if (errors) {
       if (errors.includes("not-found"))

@@ -58,6 +58,7 @@ export const NewUserRepository = (database) => {
         email: true,
         firstName: true,
         lastName: true,
+        isAdmin: true,
       },
     });
   };
